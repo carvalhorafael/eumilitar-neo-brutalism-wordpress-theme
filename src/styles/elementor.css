@@ -1,0 +1,9 @@
+.elementor {
+  color: var(--ink, #1a1612);
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+.elementor a {
+  color: inherit;
+}
+

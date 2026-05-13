@@ -1,0 +1,10 @@
+node_modules/
+/dist/
+.env
+.npmrc
+.wp-env/
+assets/dist/*
+!assets/dist/.gitkeep
+npm-debug.log*
+.playwright-mcp/
+eumilitar-theme-home*.png

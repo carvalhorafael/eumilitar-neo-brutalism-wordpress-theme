@@ -1,0 +1,25 @@
+{
+  "name": "eumilitar-neo-brutalism-wordpress-theme",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "wp:start": "wp-env start",
+    "wp:stop": "wp-env stop",
+    "wp:destroy": "wp-env destroy",
+    "theme:zip": "npm run build && node scripts/build-theme-zip.mjs"
+  },
+  "dependencies": {
+    "@carvalhorafael/eumilitar-css": "^0.2.0",
+    "@carvalhorafael/eumilitar-patterns": "^0.2.0",
+    "@carvalhorafael/eumilitar-tokens": "^0.2.0",
+    "@carvalhorafael/eumilitar-web": "^0.2.0"
+  },
+  "devDependencies": {
+    "@wordpress/env": "^10.29.0",
+    "vite": "^7.0.0"
+  }
+}
+

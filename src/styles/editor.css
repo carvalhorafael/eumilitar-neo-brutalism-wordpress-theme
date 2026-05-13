@@ -1,0 +1,18 @@
+@import "@carvalhorafael/eumilitar-tokens";
+@import "@carvalhorafael/eumilitar-css";
+
+.editor-styles-wrapper {
+  background: var(--surface-base, #ede4cf);
+  color: var(--ink, #1a1612);
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+.editor-styles-wrapper .wp-block-post-title,
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3 {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+

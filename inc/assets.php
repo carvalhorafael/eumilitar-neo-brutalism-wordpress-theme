@@ -1,0 +1,88 @@
+<?php
+/**
+ * Frontend and editor asset loading.
+ *
+ * @package EuMilitar
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Enqueue frontend assets.
+ */
+function eumilitar_enqueue_assets() {
+	if ( eumilitar_vite_is_development() && eumilitar_vite_dev_server_is_running() ) {
+		wp_enqueue_script( 'eumilitar-vite-client', EUMILITAR_VITE_DEV_SERVER . '/@vite/client', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_script( 'eumilitar-theme', EUMILITAR_VITE_DEV_SERVER . '/src/main.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_script_add_data( 'eumilitar-vite-client', 'type', 'module' );
+		wp_script_add_data( 'eumilitar-theme', 'type', 'module' );
+		return;
+	}
+
+	$entry = eumilitar_vite_manifest_entry( 'src/main.js' );
+
+	if ( ! $entry || empty( $entry['file'] ) ) {
+		return;
+	}
+
+	if ( ! empty( $entry['css'] ) && is_array( $entry['css'] ) ) {
+		foreach ( $entry['css'] as $index => $css_file ) {
+			wp_enqueue_style(
+				'eumilitar-theme-' . $index,
+				eumilitar_vite_asset_uri( $css_file ),
+				array(),
+				EUMILITAR_THEME_VERSION
+			);
+		}
+	}
+
+	wp_enqueue_script(
+		'eumilitar-theme',
+		eumilitar_vite_asset_uri( $entry['file'] ),
+		array(),
+		EUMILITAR_THEME_VERSION,
+		true
+	);
+	wp_script_add_data( 'eumilitar-theme', 'type', 'module' );
+}
+add_action( 'wp_enqueue_scripts', 'eumilitar_enqueue_assets' );
+
+/**
+ * Enqueue block editor assets.
+ */
+function eumilitar_enqueue_editor_assets() {
+	if ( eumilitar_vite_is_development() && eumilitar_vite_dev_server_is_running() ) {
+		wp_enqueue_script( 'eumilitar-editor', EUMILITAR_VITE_DEV_SERVER . '/src/editor.js', array( 'wp-blocks', 'wp-dom-ready' ), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_script_add_data( 'eumilitar-editor', 'type', 'module' );
+		return;
+	}
+
+	$entry = eumilitar_vite_manifest_entry( 'src/editor.js' );
+
+	if ( ! $entry || empty( $entry['file'] ) ) {
+		return;
+	}
+
+	if ( ! empty( $entry['css'] ) && is_array( $entry['css'] ) ) {
+		foreach ( $entry['css'] as $index => $css_file ) {
+			wp_enqueue_style(
+				'eumilitar-editor-' . $index,
+				eumilitar_vite_asset_uri( $css_file ),
+				array(),
+				EUMILITAR_THEME_VERSION
+			);
+		}
+	}
+
+	wp_enqueue_script(
+		'eumilitar-editor',
+		eumilitar_vite_asset_uri( $entry['file'] ),
+		array( 'wp-blocks', 'wp-dom-ready' ),
+		EUMILITAR_THEME_VERSION,
+		true
+	);
+	wp_script_add_data( 'eumilitar-editor', 'type', 'module' );
+}
+add_action( 'enqueue_block_editor_assets', 'eumilitar_enqueue_editor_assets' );
