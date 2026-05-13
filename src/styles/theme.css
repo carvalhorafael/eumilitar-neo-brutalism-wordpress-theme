@@ -23,6 +23,7 @@ a {
 
 .ds-button {
   border: 2px solid var(--border-strong, #1a1612);
+  box-sizing: border-box;
   box-shadow: var(--shadow-sm, 3px 3px 0 #1a1612);
   color: var(--ink, #1a1612);
   font-family: var(--font-body, system-ui, sans-serif);
@@ -35,6 +36,11 @@ a {
   transition:
     box-shadow 160ms ease,
     transform 160ms ease;
+}
+
+.ds-benefits > .ds-button,
+.ds-testimonials > .ds-button {
+  justify-self: start;
 }
 
 .ds-button:hover {
@@ -66,6 +72,34 @@ a {
 
 .ds-button--ghost-inverse {
   background: transparent;
+}
+
+.ds-input__label {
+  color: var(--ink, #1a1612);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ds-input__field,
+.ds-select__field {
+  background: var(--paper, #ede4cf);
+  border: 2px solid var(--border-strong, #1a1612);
+  box-sizing: border-box;
+  color: var(--ink, #1a1612);
+  font: inherit;
+  min-height: 2.75rem;
+  padding: 0.625rem 0.75rem;
+  width: 100%;
+}
+
+.ds-input__field:focus,
+.ds-select__field:focus {
+  box-shadow: var(--shadow-xs, 2px 2px 0 #1a1612);
+  outline: 2px solid var(--accent, #1f4d2a);
+  outline-offset: 2px;
 }
 
 .site {

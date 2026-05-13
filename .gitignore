@@ -7,4 +7,4 @@ assets/dist/*
 !assets/dist/.gitkeep
 npm-debug.log*
 .playwright-mcp/
-eumilitar-theme-home*.png
+eumilitar-theme-*.png

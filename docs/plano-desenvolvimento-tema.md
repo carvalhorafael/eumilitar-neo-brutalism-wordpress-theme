@@ -466,19 +466,29 @@ Escopo:
 
 Tarefas:
 
-- [ ] Criar partial para `urgency`.
-- [ ] Criar partial para `capture`.
-- [ ] Criar partial para `benefits`.
-- [ ] Criar partial para `testimonials`.
-- [ ] Registrar block patterns correspondentes.
-- [ ] Mapear campos CMS a partir de `@carvalhorafael/eumilitar-patterns`.
-- [ ] Documentar dados esperados por cada partial.
+- [x] Criar partial para `urgency`.
+- [x] Criar partial para `capture`.
+- [x] Criar partial para `benefits`.
+- [x] Criar partial para `testimonials`.
+- [x] Registrar block patterns correspondentes.
+- [x] Mapear campos CMS a partir de `@carvalhorafael/eumilitar-patterns`.
+- [x] Documentar dados esperados por cada partial.
 
 Critério de aceite:
 
 - todos os blocos públicos do contrato `web` têm representação no tema;
 - variações principais estão cobertas;
 - estrutura dos campos segue a anatomia dos patterns.
+
+Checkpoint atual:
+
+- `front-page.php` renderiza os sete blocos do contrato público `@carvalhorafael/eumilitar-web`;
+- partials PHP criados em `template-parts/patterns/` para `urgency`, `capture`, `benefits` e `testimonials`;
+- block patterns criados em `patterns/` para os mesmos blocos;
+- composição `patterns/landing-page.php` atualizada para incluir todos os blocos;
+- Playwright confirmou a homepage completa em `http://localhost:8888/`;
+- `npm run build` passou;
+- `php -l` dentro do container passou para os arquivos PHP do tema.
 
 ## Fase 5 - Editor e Elementor
 
