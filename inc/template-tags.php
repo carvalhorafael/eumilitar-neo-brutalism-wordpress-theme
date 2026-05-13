@@ -82,3 +82,19 @@ function eumilitar_render_form_field( $field ) {
 	<?php
 }
 
+/**
+ * Determine if a post contains EuMilitar design-system blocks or patterns.
+ *
+ * @param int|null $post_id Post ID.
+ * @return bool
+ */
+function eumilitar_post_uses_design_system_patterns( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$content = get_post_field( 'post_content', $post_id );
+
+	if ( ! is_string( $content ) || '' === $content ) {
+		return false;
+	}
+
+	return false !== strpos( $content, 'eumilitar/' ) || false !== strpos( $content, 'ds-' );
+}

@@ -13,8 +13,13 @@ get_header();
 	if ( have_posts() ) :
 		while ( have_posts() ) :
 			the_post();
+			$entry_classes = array( 'site-entry' );
+
+			if ( eumilitar_post_uses_design_system_patterns() ) {
+				$entry_classes[] = 'site-entry--design-system';
+			}
 			?>
-			<article id="post-<?php the_ID(); ?>" <?php post_class( 'site-entry' ); ?>>
+			<article id="post-<?php the_ID(); ?>" <?php post_class( $entry_classes ); ?>>
 				<header class="site-entry__header">
 					<?php the_title( '<h1 class="site-entry__title">', '</h1>' ); ?>
 				</header>
@@ -37,4 +42,3 @@ get_header();
 
 <?php
 get_footer();
-

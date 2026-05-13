@@ -496,13 +496,13 @@ Objetivo: validar o uso do tema em Gutenberg e Elementor sem perder a base do de
 
 Tarefas:
 
-- [ ] Criar `src/styles/editor.css`.
-- [ ] Configurar editor styles.
-- [ ] Criar `src/styles/elementor.css`.
-- [ ] Carregar CSS Elementor apenas quando necessário.
-- [ ] Instalar/ativar Elementor no ambiente local.
-- [ ] Criar página Elementor usando classes `ds-*`.
-- [ ] Comparar página Elementor com página de patterns nativos.
+- [x] Criar `src/styles/editor.css`.
+- [x] Configurar editor styles.
+- [x] Criar `src/styles/elementor.css`.
+- [x] Carregar CSS Elementor apenas quando necessário.
+- [x] Instalar/ativar Elementor no ambiente local.
+- [x] Criar página Elementor usando classes `ds-*`.
+- [x] Comparar página Elementor com página de patterns nativos.
 
 Critério de aceite:
 
@@ -510,6 +510,16 @@ Critério de aceite:
 - Elementor funciona sobre o tema;
 - Elementor não redefine o sistema visual;
 - ajustes Elementor ficam isolados.
+
+Checkpoint atual:
+
+- patterns `eumilitar/*` registrados explicitamente em PHP para compatibilidade com tema clássico/híbrido;
+- `src/styles/editor.css` importa tokens, CSS compartilhado e a ponte visual do tema;
+- página Gutenberg smoke criada em `http://localhost:8888/?page_id=8`;
+- Elementor confirmado como plugin ativo no ambiente local;
+- `src/styles/elementor.css` ajusta largura, título padrão e conflitos de link sem redefinir o design system;
+- página Elementor smoke criada em `http://localhost:8888/?page_id=9`;
+- documentação adicionada em `docs/editor-elementor.md`.
 
 ## Fase 6 - Qualidade e release
 
