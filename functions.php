@@ -19,4 +19,3 @@ require_once EUMILITAR_THEME_DIR . '/inc/assets.php';
 require_once EUMILITAR_THEME_DIR . '/inc/patterns.php';
 require_once EUMILITAR_THEME_DIR . '/inc/elementor.php';
 require_once EUMILITAR_THEME_DIR . '/inc/template-tags.php';
-

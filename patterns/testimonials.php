@@ -4,7 +4,10 @@
  * Slug: eumilitar/testimonials
  * Categories: eumilitar
  * Description: Depoimentos baseados no contrato do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-testimonials ds-testimonials--grid">
@@ -26,4 +29,3 @@
 	</div>
 </section>
 <!-- /wp:html -->
-

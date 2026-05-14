@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function eumilitar_register_pattern_categories() {
 	if ( function_exists( 'register_block_pattern_category' ) ) {
 		register_block_pattern_category(
-			'eumilitar',
+			'eumilitar-neo-brutalism-wordpress-theme',
 			array(
-				'label' => esc_html__( 'EuMilitar', 'eumilitar' ),
+				'label' => esc_html__( 'EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
 			)
 		);
 	}
@@ -50,36 +50,36 @@ function eumilitar_register_block_patterns() {
 
 	$patterns = array(
 		'hero'         => array(
-			'title'       => __( 'Hero EuMilitar', 'eumilitar' ),
-			'description' => __( 'Hero canônico baseado no contrato do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'Hero EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'Hero canônico baseado no contrato do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'urgency'      => array(
-			'title'       => __( 'Urgência EuMilitar', 'eumilitar' ),
-			'description' => __( 'Bloco de urgência baseado no contrato do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'Urgência EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'Bloco de urgência baseado no contrato do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'benefits'     => array(
-			'title'       => __( 'Benefícios EuMilitar', 'eumilitar' ),
-			'description' => __( 'Grade de benefícios baseada no contrato do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'Benefícios EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'Grade de benefícios baseada no contrato do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'testimonials' => array(
-			'title'       => __( 'Depoimentos EuMilitar', 'eumilitar' ),
-			'description' => __( 'Depoimentos baseados no contrato do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'Depoimentos EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'Depoimentos baseados no contrato do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'capture'      => array(
-			'title'       => __( 'Captação EuMilitar', 'eumilitar' ),
-			'description' => __( 'Formulário de captação baseado no contrato do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'Captação EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'Formulário de captação baseado no contrato do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'faq'          => array(
-			'title'       => __( 'FAQ EuMilitar', 'eumilitar' ),
-			'description' => __( 'FAQ com accordion progressivo do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'FAQ EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'FAQ com accordion progressivo do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'cta'          => array(
-			'title'       => __( 'CTA EuMilitar', 'eumilitar' ),
-			'description' => __( 'CTA final baseado no contrato do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'CTA EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'CTA final baseado no contrato do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 		'landing-page' => array(
-			'title'       => __( 'Landing Page EuMilitar', 'eumilitar' ),
-			'description' => __( 'Composição inicial com todos os blocos do EuMilitar Design System.', 'eumilitar' ),
+			'title'       => __( 'Landing Page EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			'description' => __( 'Composição inicial com todos os blocos do EuMilitar Design System.', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		),
 	);
 
@@ -95,7 +95,7 @@ function eumilitar_register_block_patterns() {
 			array(
 				'title'       => $metadata['title'],
 				'description' => $metadata['description'],
-				'categories'  => array( 'eumilitar' ),
+				'categories'  => array( 'eumilitar-neo-brutalism-wordpress-theme' ),
 				'content'     => $content,
 			)
 		);

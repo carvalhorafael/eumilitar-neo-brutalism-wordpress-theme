@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register theme supports and menus.
  */
 function eumilitar_theme_setup() {
-	load_theme_textdomain( 'eumilitar', EUMILITAR_THEME_DIR . '/languages' );
+	load_theme_textdomain( 'eumilitar-neo-brutalism-wordpress-theme', EUMILITAR_THEME_DIR . '/languages' );
 
 	add_theme_support( 'automatic-feed-links' );
 	add_theme_support( 'title-tag' );
@@ -26,7 +26,7 @@ function eumilitar_theme_setup() {
 
 	register_nav_menus(
 		array(
-			'primary' => esc_html__( 'Menu principal', 'eumilitar' ),
+			'primary' => esc_html__( 'Menu principal', 'eumilitar-neo-brutalism-wordpress-theme' ),
 		)
 	);
 }

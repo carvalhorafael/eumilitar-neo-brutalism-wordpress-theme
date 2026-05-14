@@ -4,7 +4,10 @@
  * Slug: eumilitar/hero
  * Categories: eumilitar
  * Description: Hero canônico baseado no contrato do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-hero ds-hero--light">
@@ -21,4 +24,3 @@
 	</div>
 </section>
 <!-- /wp:html -->
-

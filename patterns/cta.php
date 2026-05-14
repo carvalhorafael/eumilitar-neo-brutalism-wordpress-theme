@@ -4,7 +4,10 @@
  * Slug: eumilitar/cta
  * Categories: eumilitar
  * Description: CTA final baseado no contrato do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-cta ds-cta--brand-dark">
@@ -17,4 +20,3 @@
 	</div>
 </section>
 <!-- /wp:html -->
-

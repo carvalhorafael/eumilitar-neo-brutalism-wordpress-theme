@@ -4,7 +4,10 @@
  * Slug: eumilitar/urgency
  * Categories: eumilitar
  * Description: Bloco de urgência baseado no contrato do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-urgency ds-urgency--max-conversion-cta">
@@ -21,4 +24,3 @@
 	</div>
 </section>
 <!-- /wp:html -->
-

@@ -4,7 +4,10 @@
  * Slug: eumilitar/faq
  * Categories: eumilitar
  * Description: FAQ com accordion progressivo do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-faq">
@@ -26,4 +29,3 @@
 	</div>
 </section>
 <!-- /wp:html -->
-
