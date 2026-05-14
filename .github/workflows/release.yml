@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish tagged release
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Configure GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.EUMILITAR_PACKAGES_TOKEN }}
+        run: |
+          {
+            echo "@carvalhorafael:registry=https://npm.pkg.github.com"
+            echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}"
+          } > .npmrc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check release version
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: npm run release:check-version -- "${TAG_NAME}"
+
+      - name: Start WordPress
+        run: npm run wp:start
+
+      - name: Validate release package
+        run: npm run validate
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          gh release create "${TAG_NAME}" \
+            dist/eumilitar-neo-brutalism-wordpress-theme.zip \
+            --title "${TAG_NAME}" \
+            --generate-notes
+
+      - name: Stop WordPress
+        if: always()
+        continue-on-error: true
+        run: npm run wp:stop
