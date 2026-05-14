@@ -4,7 +4,7 @@ Contributors: carvalhorafael
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.2
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, custom-logo, block-patterns
@@ -32,6 +32,10 @@ Para validar e gerar o pacote distribuível:
 2. npm run theme:zip
 
 == Changelog ==
+
+= 0.3.0 =
+
+* Atualização para as versões mais recentes disponíveis dos pacotes do EuMilitar Design System.
 
 = 0.2.0 =
 
