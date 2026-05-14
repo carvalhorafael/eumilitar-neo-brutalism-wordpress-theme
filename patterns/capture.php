@@ -4,7 +4,10 @@
  * Slug: eumilitar/capture
  * Categories: eumilitar
  * Description: Formulário de captação baseado no contrato do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-capture ds-capture--lead">
@@ -26,4 +29,3 @@
 	</form>
 </section>
 <!-- /wp:html -->
-

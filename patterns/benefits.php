@@ -4,7 +4,10 @@
  * Slug: eumilitar/benefits
  * Categories: eumilitar
  * Description: Grade de benefícios baseada no contrato do EuMilitar Design System.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:html -->
 <section class="ds-benefits ds-benefits--icon-grid">
@@ -36,4 +39,3 @@
 	<a class="ds-button ds-button--primary" href="#planos">Ver plano</a>
 </section>
 <!-- /wp:html -->
-

@@ -527,14 +527,14 @@ Objetivo: preparar o tema para distribuição pública.
 
 Tarefas:
 
-- [ ] Adicionar WordPress Coding Standards.
-- [ ] Configurar PHPCS.
-- [ ] Adicionar Theme Check ao fluxo de validação.
-- [ ] Criar script `scripts/build-theme-zip.mjs`.
-- [ ] Criar allowlist de arquivos do ZIP.
-- [ ] Gerar pacote em `dist/`.
-- [ ] Testar instalação do ZIP em uma instância limpa.
-- [ ] Documentar processo de release no `README.md`.
+- [x] Adicionar WordPress Coding Standards.
+- [x] Configurar PHPCS.
+- [x] Adicionar Theme Check ao fluxo de validação.
+- [x] Criar script `scripts/build-theme-zip.mjs`.
+- [x] Criar allowlist de arquivos do ZIP.
+- [x] Gerar pacote em `dist/`.
+- [x] Testar instalação do ZIP em uma instância limpa.
+- [x] Documentar processo de release no `README.md`.
 
 Critério de aceite:
 
@@ -543,6 +543,15 @@ Critério de aceite:
 - Theme Check não acusa problemas bloqueantes;
 - ZIP instala em uma instalação WordPress limpa;
 - tema funciona sem Node/npm em runtime.
+
+Implementação:
+
+- `composer.json` e `phpcs.xml.dist` definem PHPCS, WordPress Coding Standards e PHPCompatibilityWP;
+- `npm run composer:install` instala as dependências PHP dentro do container `wp-env`;
+- `npm run theme:check` executa Theme Check e bloqueia apenas problemas `REQUIRED`;
+- `npm run theme:validate-zip` valida a allowlist do ZIP público;
+- `npm run theme:test-install` instala o ZIP em uma cópia limpa da instância de testes;
+- `npm run validate` concentra o fluxo de release local.
 
 ## Rotina de atualização do design system
 

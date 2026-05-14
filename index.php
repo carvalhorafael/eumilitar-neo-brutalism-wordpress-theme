@@ -25,7 +25,16 @@ get_header();
 				</header>
 
 				<div class="site-entry__content">
-					<?php the_content(); ?>
+					<?php
+					the_content();
+
+					wp_link_pages(
+						array(
+							'before' => '<nav class="page-links">' . esc_html__( 'Páginas:', 'eumilitar-neo-brutalism-wordpress-theme' ),
+							'after'  => '</nav>',
+						)
+					);
+					?>
 				</div>
 			</article>
 			<?php
@@ -33,7 +42,7 @@ get_header();
 	else :
 		?>
 		<section class="site-empty">
-			<h1><?php esc_html_e( 'Conteúdo não encontrado', 'eumilitar' ); ?></h1>
+			<h1><?php esc_html_e( 'Conteúdo não encontrado', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></h1>
 		</section>
 		<?php
 	endif;

@@ -12,11 +12,14 @@ const zipPath = resolve(distDir, `${themeName}.zip`);
 const includePaths = [
   "style.css",
   "functions.php",
+  "front-page.php",
   "index.php",
   "header.php",
   "footer.php",
   "theme.json",
   "README.md",
+  "readme.txt",
+  "screenshot.png",
   "inc",
   "template-parts",
   "patterns",
@@ -54,4 +57,3 @@ if (result.status !== 0) {
 }
 
 console.log(`Created ${zipPath}`);
-

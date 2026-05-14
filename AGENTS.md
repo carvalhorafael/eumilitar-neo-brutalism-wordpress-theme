@@ -83,6 +83,7 @@ Antes de considerar uma mudança pronta:
 
 ```bash
 npm run build
+npm run validate
 npm run theme:zip
 ```
 
@@ -90,4 +91,10 @@ Para validar PHP dentro do container:
 
 ```bash
 npx wp-env run cli bash -lc 'cd /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme && find . -path "./dist" -prune -o -name "*.php" -print0 | xargs -0 -n1 php -l'
+```
+
+Se o container foi recriado ou o `vendor/` não existir, instalar as dependências PHP antes do lint:
+
+```bash
+npm run composer:install
 ```

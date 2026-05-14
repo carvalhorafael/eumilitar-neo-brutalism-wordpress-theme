@@ -16,6 +16,7 @@ Configure o registry local copiando `.npmrc.example` para `.npmrc` e substituind
 ```bash
 npm install
 npm run wp:start
+npm run composer:install
 npm run dev
 ```
 
@@ -34,6 +35,14 @@ npm run build
 
 O build de produção é gerado em `assets/dist`.
 
+## Validação
+
+```bash
+npm run validate
+```
+
+Esse comando roda build Vite, instala as dependências PHP no container, valida sintaxe PHP, executa PHPCS com WordPress Coding Standards, roda Theme Check contra o tema, gera o ZIP público, confere a allowlist do pacote e testa a instalação do ZIP em uma cópia limpa do WordPress de testes.
+
 ## Pacote do tema
 
 ```bash
@@ -41,6 +50,8 @@ npm run theme:zip
 ```
 
 O ZIP público é gerado em `dist/` e inclui apenas arquivos necessários para instalar o tema no WordPress.
+
+Para release, use o ZIP gerado em `dist/eumilitar-neo-brutalism-wordpress-theme.zip`. O pacote não inclui `node_modules`, `vendor`, fontes Vite, scripts de desenvolvimento, documentação interna ou arquivos de configuração local.
 
 ## Editor e Elementor
 

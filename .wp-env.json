@@ -3,7 +3,10 @@
   "phpVersion": "8.3",
   "port": 8888,
   "themes": ["."],
-  "plugins": ["https://downloads.wordpress.org/plugin/elementor.latest-stable.zip"],
+  "plugins": [
+    "https://downloads.wordpress.org/plugin/elementor.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/theme-check.20231220.zip"
+  ],
   "config": {
     "WP_ENVIRONMENT_TYPE": "local",
     "WP_DEBUG": true,

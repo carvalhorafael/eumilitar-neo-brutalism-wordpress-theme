@@ -4,7 +4,10 @@
  * Slug: eumilitar/landing-page
  * Categories: eumilitar
  * Description: Composição inicial com Hero, FAQ e CTA.
+ *
+ * @package EuMilitar
  */
+
 ?>
 <!-- wp:pattern {"slug":"eumilitar/hero"} /-->
 <!-- wp:pattern {"slug":"eumilitar/urgency"} /-->

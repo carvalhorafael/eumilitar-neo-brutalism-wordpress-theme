@@ -10,7 +10,7 @@ $eyebrow         = $args['eyebrow'] ?? '';
 $headline        = $args['headline'] ?? '';
 $supporting_copy = $args['supporting_copy'] ?? '';
 $fields          = $args['fields'] ?? array();
-$submit_label    = $args['submit_label'] ?? __( 'Enviar', 'eumilitar' );
+$submit_label    = $args['submit_label'] ?? __( 'Enviar', 'eumilitar-neo-brutalism-wordpress-theme' );
 ?>
 
 <section class="ds-capture ds-capture--<?php echo esc_attr( $variant ); ?>">
