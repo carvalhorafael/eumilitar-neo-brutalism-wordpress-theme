@@ -11,6 +11,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   validate:
@@ -40,11 +42,65 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
       - name: Start WordPress
         run: npm run wp:start
 
+      - name: Install PHP dependencies
+        run: npm run composer:install
+
+      - name: Run automated tests
+        run: npm test
+
       - name: Validate release package
         run: npm run validate
+
+      - name: Generate PHP coverage report
+        run: npm run test:php:coverage
+
+      - name: Upload PHP coverage HTML
+        uses: actions/upload-artifact@v5
+        with:
+          name: php-coverage-html
+          path: coverage/php/html
+          if-no-files-found: error
+
+      - name: Comment PHP coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- eumilitar-php-coverage -->';
+            const body = fs.readFileSync('coverage/php/summary.md', 'utf8');
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const previous = comments.data.find((comment) => comment.body?.includes(marker));
+
+            if (previous) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: previous.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
 
       - name: Upload theme ZIP
         uses: actions/upload-artifact@v5

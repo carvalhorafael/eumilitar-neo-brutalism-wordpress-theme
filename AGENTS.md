@@ -93,11 +93,67 @@ Rotina padrão:
 O workflow de CI roda em PRs para `main`, em pushes para `main` e manualmente via `workflow_dispatch`. Ele executa:
 
 - `npm ci`;
+- `npx playwright install --with-deps chromium`;
 - `npm run wp:start`;
+- `npm test`;
 - `npm run validate`;
 - upload do ZIP gerado em `dist/eumilitar-neo-brutalism-wordpress-theme.zip` como artifact.
 
 O repositório precisa do secret `EUMILITAR_PACKAGES_TOKEN` para instalar os pacotes privados/publicados do escopo `@carvalhorafael` no GitHub Packages. Esse token deve ter permissão mínima de leitura dos packages necessários. Nunca commitar `.npmrc` real ou tokens.
+
+## Política de testes automatizados
+
+Não tente testar tudo. Neste tema, a suíte deve proteger contratos, fluxos críticos e bugs reais, sem virar uma coleção frágil de testes de detalhes visuais.
+
+O tema é um consumer/adaptador do EuMilitar Design System. Portanto, os testes deste repositório devem provar que o WordPress consome corretamente os pacotes, registra patterns, enfileira assets, preserva contratos de markup e entrega interações essenciais. Não teste aqui os detalhes internos dos pacotes `@carvalhorafael/eumilitar-*`.
+
+Camadas de teste esperadas:
+
+- `npm run test:static`: build Vite, sintaxe PHP, PHPCS e Theme Check;
+- `npm run test:php`: PHPUnit dentro do WordPress de testes do `wp-env`;
+- `npm run test:php:coverage`: cobertura PHP informativa, sem gate de percentual;
+- `npm run test:e2e`: Playwright para fluxos críticos do front-end em desktop/mobile e smoke do editor em desktop;
+- `npm test`: gate automatizado padrão para PRs;
+- `npm run validate`: gate completo de release/empacotamento.
+
+O CI deve publicar o report HTML de cobertura PHP como artifact e comentar o resumo no PR. Esse comentário é apenas informativo: não bloqueie merge por percentual de cobertura.
+
+O que deve ser testado:
+
+- setup WordPress do tema: theme supports, menus, text domain, enqueues e bootstrap básico;
+- contratos com o design system: registro de patterns, classes/atributos esperados, markup canônico e assets carregados;
+- helpers PHP próprios: escaping, fallback, geração de markup e detecção de conteúdo;
+- interações críticas no navegador: homepage, accordion/FAQ, ausência de erros graves de console e comportamento em mobile;
+- acessibilidade automatizada básica em páginas críticas usando axe via Playwright;
+- empacotamento: ZIP gerado, allowlist do pacote e instalação limpa em WordPress de testes.
+
+O que não deve ser testado aqui:
+
+- implementação interna dos pacotes do design system;
+- cada classe CSS, token ou variação visual da biblioteca;
+- snapshots visuais amplos para mudanças cosméticas pequenas;
+- cada texto estático de pattern, salvo quando o texto fizer parte de um contrato funcional;
+- fluxo profundo do Elementor, a menos que o comportamento vire requisito crítico do tema.
+
+Regra para novas features:
+
+- se a feature cria comportamento observável ou contrato novo, adicione teste junto da implementação;
+- para contratos PHP/WordPress claros, prefira PHPUnit antes ou junto da feature;
+- para interação, editor, front-end ou acessibilidade, prefira Playwright;
+- para exploração visual ainda instável, estabilize o contrato primeiro e depois adicione teste.
+
+Regra para bugs:
+
+- sempre que viável, escreva primeiro um teste que reproduz o bug;
+- confirme que o teste falha antes da correção;
+- corrija o bug;
+- mantenha o teste como regressão permanente.
+
+Regra para refactors:
+
+- use a suíte existente como proteção;
+- adicione teste novo apenas se descobrir um contrato importante sem cobertura;
+- não adicione testes apenas para travar uma implementação interna que pode mudar sem alterar comportamento.
 
 ## Releases e tags
 

@@ -7,6 +7,9 @@
     "https://downloads.wordpress.org/plugin/elementor.latest-stable.zip",
     "https://downloads.wordpress.org/plugin/theme-check.20231220.zip"
   ],
+  "lifecycleScripts": {
+    "afterStart": "THEME_SLUG=$(basename \"$PWD\"); for SERVICE in cli tests-cli; do wp-env run \"$SERVICE\" wp theme activate \"$THEME_SLUG\"; done"
+  },
   "config": {
     "WP_ENVIRONMENT_TYPE": "local",
     "WP_DEBUG": true,
