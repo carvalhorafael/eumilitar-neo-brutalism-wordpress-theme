@@ -17,6 +17,7 @@ Configure o registry local copiando `.npmrc.example` para `.npmrc` e substituind
 npm install
 npm run wp:start
 npm run composer:install
+npm run seed:blog
 npm run dev
 ```
 
@@ -26,6 +27,14 @@ WordPress local:
 - Admin: `http://localhost:8888/wp-admin`
 - Usuario: `admin`
 - Senha: `password`
+
+Para recriar um cenário visual consistente de blog no ambiente local:
+
+```bash
+npm run seed:blog
+```
+
+Esse comando cria/atualiza posts, categorias, tags, comentários aprovados e configura a página de posts. Ele é idempotente e voltado apenas para desenvolvimento local.
 
 ## Build
 
@@ -84,3 +93,5 @@ Para release, use o ZIP gerado em `dist/eumilitar-neo-brutalism-wordpress-theme.
 Os patterns do tema ficam disponíveis na categoria `EuMilitar` do editor de blocos.
 
 Notas de uso e validação estão em `docs/editor-elementor.md`.
+
+Decisões de escopo do tema ficam em `docs/theme-decisions.md`.

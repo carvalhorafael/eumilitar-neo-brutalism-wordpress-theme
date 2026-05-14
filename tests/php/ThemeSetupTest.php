@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Verifies WordPress-facing setup registered by the theme.
  *
+ * @covers ::eumilitar_get_editor_stylesheets
  * @covers ::eumilitar_theme_setup
  */
 final class ThemeSetupTest extends TestCase {
@@ -26,6 +27,7 @@ final class ThemeSetupTest extends TestCase {
 			'editor-styles',
 			'responsive-embeds',
 			'wp-block-styles',
+			'html5',
 		);
 
 		foreach ( $supports as $support ) {
@@ -41,5 +43,24 @@ final class ThemeSetupTest extends TestCase {
 
 		$this->assertArrayHasKey( 'primary', $menus );
 		$this->assertSame( 'Menu principal', $menus['primary'] );
+	}
+
+	/**
+	 * HTML5 support should include native comment and search markup.
+	 */
+	public function test_html5_support_includes_comment_markup(): void {
+		$this->assertTrue( current_theme_supports( 'html5', 'comment-form' ) );
+		$this->assertTrue( current_theme_supports( 'html5', 'comment-list' ) );
+		$this->assertTrue( current_theme_supports( 'html5', 'search-form' ) );
+	}
+
+	/**
+	 * Editor stylesheets should be registered for the block editor canvas.
+	 */
+	public function test_editor_stylesheets_are_available(): void {
+		$stylesheets = eumilitar_get_editor_stylesheets();
+
+		$this->assertNotEmpty( $stylesheets );
+		$this->assertContainsOnly( 'string', $stylesheets );
 	}
 }
