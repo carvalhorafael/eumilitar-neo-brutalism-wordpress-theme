@@ -1,6 +1,6 @@
 {
   "name": "eumilitar-neo-brutalism-wordpress-theme",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,10 +21,10 @@
     "validate": "npm run build && npm run composer:install && npm run lint:php:syntax && npm run lint:php && npm run theme:check && npm run theme:zip && npm run theme:validate-zip && npm run theme:test-install"
   },
   "dependencies": {
-    "@carvalhorafael/eumilitar-css": "^0.2.0",
+    "@carvalhorafael/eumilitar-css": "^0.3.0",
     "@carvalhorafael/eumilitar-patterns": "^0.2.0",
     "@carvalhorafael/eumilitar-tokens": "^0.2.0",
-    "@carvalhorafael/eumilitar-web": "^0.2.0"
+    "@carvalhorafael/eumilitar-web": "^0.3.0"
   },
   "devDependencies": {
     "@wordpress/env": "^10.29.0",
