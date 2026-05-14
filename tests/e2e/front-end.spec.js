@@ -299,6 +299,22 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".entry-meta").first()).toBeVisible();
   });
 
+  test("stacks the blog sidebar below posts on narrow viewports", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(blogPageUrl);
+
+    const mainBox = await page.locator(".content-sidebar-layout__main").boundingBox();
+    const sidebarBox = await page.locator(".content-sidebar-layout__sidebar").boundingBox();
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    const viewportWidth = await page.evaluate(() => window.innerWidth);
+
+    expect(mainBox).not.toBeNull();
+    expect(sidebarBox).not.toBeNull();
+    expect(sidebarBox.y).toBeGreaterThanOrEqual(mainBox.y + mainBox.height - 1);
+    expect(scrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
+    await expect(page.locator(".widget-area--blog")).toBeVisible();
+  });
+
   test("paginates the blog post index", async ({ page }) => {
     await page.goto(blogPageUrl);
 

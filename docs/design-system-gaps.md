@@ -172,7 +172,8 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Necessidade: padrao visual para areas editaveis do WordPress, incluindo sidebar de blog, sidebar de artigo, area apos artigo e rodape.
 - O que existe hoje no DS: primitives como `.ds-card`, `.ds-button`, `.ds-badge`, inputs, lista/divider e patterns de secoes maiores.
 - Limite encontrado: nao ha componente/pattern especifico para sidebar editorial ou wrapper de widget WordPress.
-- Decisão temporária no tema: registrar areas com APIs nativas do WordPress e criar adapters locais `.widget-area`, `.widget` e `.widget__title`, usando tokens/primitives do DS.
+- Decisão temporária no tema: registrar areas com APIs nativas do WordPress, criar adapters locais `.widget-area`, `.widget` e `.widget__title`, e oferecer o pattern `eumilitar/sidebar-blog` como composicao inicial.
+- Encaminhamento para o Design System: avaliar um pattern oficial de sidebar editorial com wrapper, ritmo vertical, titulos, lista editorial, busca e taxonomias. Hoje o tema precisa coordenar isso localmente porque o DS cobre secoes de pagina, mas nao areas editaveis estreitas do WordPress.
 
 ### Lista compacta de posts para widgets
 
@@ -184,7 +185,8 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Necessidade: lista compacta de artigos recentes/relacionados adequada para coluna estreita, com titulo, data e link.
 - O que existe hoje no DS: card editorial local para listagens e primitives `.ds-card`, `.ds-badge` e `.ds-button`.
 - Limite encontrado: nao ha componente/pattern de lista compacta editorial para sidebar.
-- Decisão temporária no tema: usar inicialmente o bloco nativo Latest Posts estilizado como adapter local; se o contrato visual precisar de thumbnail/metadados especificos, criar template local e registrar a evolucao.
+- Decisão temporária no tema: usar inicialmente o bloco nativo Latest Posts estilizado como adapter local e incluído em `eumilitar/sidebar-blog`; se o contrato visual precisar de thumbnail/metadados especificos, criar template local e registrar a evolucao.
+- Encaminhamento para o Design System: definir uma lista compacta editorial oficial para areas estreitas, separada dos cards de listagem principais.
 
 ### Lista de categorias, tags e topicos
 
@@ -197,7 +199,8 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Necessidade: exibicao coerente de categorias, tags e topicos editoriais como links escaneaveis em areas estreitas.
 - O que existe hoje no DS: `.ds-badge`, list/divider e primitives textuais.
 - Limite encontrado: nao ha componente editorial de taxonomy/link cloud para WordPress.
-- Decisão temporária no tema: estilizar blocos nativos Categories e Tag Cloud com tokens do DS e avaliar se devem virar pattern no Design System.
+- Decisão temporária no tema: estilizar blocos nativos Categories e Tag Cloud com tokens do DS e usa-los no pattern `eumilitar/sidebar-blog`.
+- Encaminhamento para o Design System: avaliar componente de links/taxonomias para categorias, tags e topicos editoriais, com variantes de lista e nuvem.
 
 ### CTA compacto para sidebar
 
@@ -210,7 +213,8 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Necessidade: chamada curta de conversao em area estreita sem usar uma secao de landing completa.
 - O que existe hoje no DS: pattern `cta` com variantes `light`, `brand-dark` e `urgent`.
 - Limite encontrado: o `cta` atual e orientado a secao/faixa, nao a card compacto de sidebar.
-- Decisão temporária no tema: compor CTA compacto com `.ds-card`, `.ds-badge` e `.ds-button`, mantendo o gap registrado ate o Design System fornecer variante compacta.
+- Decisão temporária no tema: compor CTA compacto com `.ds-badge`, `.ds-button` e adapters locais em `eumilitar/sidebar-blog`; para area horizontal, usar `ds-cta` no pattern `eumilitar/after-post-cta`.
+- Encaminhamento para o Design System: criar variante compacta oficial de CTA para sidebar/widget, sem depender de uma faixa completa de landing page.
 
 ### Captura compacta para sidebar
 
@@ -223,4 +227,5 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Necessidade: formulario curto de captura em coluna estreita.
 - O que existe hoje no DS: pattern `capture` e primitives de input/button.
 - Limite encontrado: o pattern `capture` atual e mais adequado a secoes de pagina; falta variante compacta para widget/sidebar.
-- Decisão temporária no tema: usar blocos/forms nativos quando houver integracao real e aplicar adapter local de largura estreita com tokens do DS.
+- Decisão temporária no tema: oferecer `eumilitar/capture-compact` com `.ds-card`, `.ds-badge`, inputs e `.ds-button`, aplicando classes locais apenas para grid/espacamento estreito.
+- Encaminhamento para o Design System: criar variante oficial de captura compacta com anatomia, campos minimos, estados e recomendacao de uso em sidebar.

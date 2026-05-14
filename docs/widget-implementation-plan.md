@@ -225,16 +225,18 @@ Arquivos previstos:
 
 - `patterns/sidebar-blog.php`;
 - `patterns/after-post-cta.php`;
+- `patterns/capture-compact.php`;
 - `inc/patterns.php`;
 - `docs/design-system-gaps.md`.
 
 Tarefas:
 
-- [ ] Criar pattern `eumilitar/sidebar-blog` se o editor de Widgets aceitar bem a composicao.
-- [ ] Criar pattern `eumilitar/after-post-cta`.
-- [ ] Reutilizar `ds-cta`, `ds-capture`, `.ds-card`, `.ds-button` e `.ds-badge` quando possivel.
-- [ ] Evitar criar markup que pareca novo componente oficial do DS sem registrar gap.
-- [ ] Atualizar a lista de patterns em testes de registro, se aplicavel.
+- [x] Criar pattern `eumilitar/sidebar-blog` se o editor de Widgets aceitar bem a composicao.
+- [x] Criar pattern `eumilitar/after-post-cta`.
+- [x] Criar pattern `eumilitar/capture-compact`.
+- [x] Reutilizar `ds-cta`, `.ds-card`, `.ds-button` e `.ds-badge` quando possivel.
+- [x] Evitar criar markup que pareca novo componente oficial do DS sem registrar gap.
+- [x] Atualizar a lista de patterns em testes de registro, se aplicavel.
 
 Critérios de aceite:
 
@@ -263,7 +265,7 @@ Tarefas:
 
 - [x] Marcar progresso da Fase 7 em `docs/plano-desenvolvimento-tema.md`.
 - [x] Atualizar `docs/widget-strategy.md` com decisoes finais tomadas durante implementacao.
-- [ ] Revisar `docs/design-system-gaps.md` para remover duplicidade ou registrar novos gaps descobertos.
+- [x] Revisar `docs/design-system-gaps.md` para remover duplicidade ou registrar novos gaps descobertos.
 - [x] Confirmar que novos arquivos entram no ZIP publico quando necessario.
 - [ ] Rodar validacao completa.
 

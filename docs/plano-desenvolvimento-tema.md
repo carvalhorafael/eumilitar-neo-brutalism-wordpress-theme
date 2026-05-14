@@ -598,11 +598,11 @@ Tarefas:
 - [x] Renderizar area apos artigo antes dos comentarios.
 - [x] Renderizar area opcional no rodape.
 - [x] Criar styles para `.widget-area`, `.widget`, `.widget__title` e blocos nativos usados em widgets.
-- [ ] Criar patterns de composicao para sidebar/apos artigo quando fizer sentido.
+- [x] Criar patterns de composicao para sidebar/apos artigo quando fizer sentido.
 - [x] Atualizar `docs/design-system-gaps.md` para todo adapter local sem equivalente no Design System.
 - [x] Adicionar testes PHPUnit para areas registradas.
 - [x] Adicionar smoke E2E desktop para blog com sidebar.
-- [ ] Adicionar smoke E2E mobile para blog com sidebar.
+- [x] Adicionar smoke E2E mobile para blog com sidebar.
 
 Critério de aceite:
 

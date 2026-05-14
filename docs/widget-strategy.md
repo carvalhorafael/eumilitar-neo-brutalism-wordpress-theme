@@ -118,13 +118,13 @@ Evitar no primeiro ciclo:
 
 Oferecer patterns para acelerar a montagem:
 
-- `Sidebar do blog`: busca + categorias + recentes + CTA compacto;
-- `Sidebar de artigo`: recentes/relacionados + CTA contextual;
-- `CTA apos artigo`: bloco `ds-cta` horizontal;
-- `Captura compacta`: composicao baseada em `ds-capture`, adaptada para largura estreita;
-- `FAQ compacto`: composicao baseada em `ds-faq`, limitada a poucas perguntas.
+- `eumilitar/sidebar-blog`: busca + recentes + categorias + tags + CTA compacto;
+- `eumilitar/after-post-cta`: bloco `ds-cta` horizontal para area apos artigo;
+- `eumilitar/capture-compact`: formulario curto baseado em primitives do DS e adapter local de largura estreita.
 
 Esses patterns devem reaproveitar classes e markup do Design System quando o contrato existir. Quando a largura estreita exigir ajuste local, usar classes locais do tema como adaptacao temporaria e registrar a lacuna em `docs/design-system-gaps.md`.
+
+Ficaram deliberadamente fora do primeiro ciclo: `single-post-sidebar`, pattern especifico de sidebar de artigo e FAQ compacto. A decisao atual e manter a leitura do artigo limpa e usar `after-post-content` para conversao contextual.
 
 ## Forma de implementacao
 

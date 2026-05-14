@@ -35,6 +35,9 @@ test.describe("EuMilitar theme editor contracts", () => {
         "eumilitar/hero",
         "eumilitar/faq",
         "eumilitar/landing-page",
+        "eumilitar/sidebar-blog",
+        "eumilitar/after-post-cta",
+        "eumilitar/capture-compact",
       ])
     );
   });
