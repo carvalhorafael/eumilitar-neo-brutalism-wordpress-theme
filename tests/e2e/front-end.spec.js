@@ -128,6 +128,7 @@ test.describe("EuMilitar blog templates", () => {
   let firstPostId;
   let originalPageForPosts;
   let originalPageOnFront;
+  let originalPostsPerPage;
   let originalShowOnFront;
   let tagUrl;
 
@@ -139,6 +140,7 @@ test.describe("EuMilitar blog templates", () => {
     originalShowOnFront = tryRunWpCli(["option", "get", "show_on_front"]) || "posts";
     originalPageOnFront = tryRunWpCli(["option", "get", "page_on_front"]) || "0";
     originalPageForPosts = tryRunWpCli(["option", "get", "page_for_posts"]) || "0";
+    originalPostsPerPage = tryRunWpCli(["option", "get", "posts_per_page"]) || "10";
     cleanupE2eContent();
 
     blogPageId = runWpCli([
@@ -165,6 +167,7 @@ test.describe("EuMilitar blog templates", () => {
     setWpOption("show_on_front", "page");
     setWpOption("page_on_front", frontPageId);
     setWpOption("page_for_posts", blogPageId);
+    setWpOption("posts_per_page", "2");
     blogPageUrl = runWpCli(["post", "url", blogPageId]);
     firstPostId = runWpCli([
       "post",
@@ -201,6 +204,15 @@ test.describe("EuMilitar blog templates", () => {
       "--post_name=e2e-blog-como-revisar-antes-do-simulado",
       "--post_content=Dicas para revisar sem perder o foco no edital.",
     ]);
+    runWpCli([
+      "post",
+      "create",
+      "--post_type=post",
+      "--post_status=publish",
+      "--post_title=Como montar um ciclo de revisão E2E",
+      "--post_name=e2e-blog-como-montar-um-ciclo-de-revisao",
+      "--post_content=Um exemplo de ciclo para manter constância.",
+    ]);
   });
 
   test.afterAll(({}, testInfo) => {
@@ -211,6 +223,7 @@ test.describe("EuMilitar blog templates", () => {
     setWpOption("show_on_front", originalShowOnFront || "posts");
     setWpOption("page_on_front", originalPageOnFront || "0");
     setWpOption("page_for_posts", originalPageForPosts || "0");
+    setWpOption("posts_per_page", originalPostsPerPage || "10");
     cleanupE2eContent();
   });
 
@@ -220,8 +233,22 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".blog-header__title")).toHaveText("Artigos E2E");
     expect(await page.locator(".post-card").count()).toBeGreaterThanOrEqual(2);
     expect(await page.locator(".post-card__media--placeholder").count()).toBeGreaterThanOrEqual(2);
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+    await expect(page.locator(".post-card__title").first()).toBeVisible();
     await expect(page.locator(".entry-meta").first()).toBeVisible();
+  });
+
+  test("paginates the blog post index", async ({ page }) => {
+    await page.goto(blogPageUrl);
+
+    const pagination = page.locator(".posts-pagination");
+
+    await expect(pagination).toBeVisible();
+    await expect(pagination.locator("[aria-current='page']")).toHaveText("1");
+
+    await pagination.getByRole("link", { name: "2" }).click();
+
+    await expect(page.locator(".posts-pagination [aria-current='page']")).toHaveText("2");
+    expect(await page.locator(".post-card").count()).toBeGreaterThanOrEqual(1);
   });
 
   test("renders recent posts on the front page", async ({ page }) => {
@@ -265,6 +292,12 @@ test.describe("EuMilitar blog templates", () => {
 
     await expect(page.locator(".blog-header__title")).toContainText("Resultados para E2E");
     await expect(page.locator('form[role="search"]')).toBeVisible();
+
+    await page.goto("/?s=resultado-inexistente-e2e");
+
+    await expect(page.locator(".site-empty")).toBeVisible();
+    await expect(page.locator(".site-empty")).toContainText("Nenhum resultado encontrado");
+    await expect(page.getByRole("link", { name: "Ver todos os artigos" })).toHaveAttribute("href", blogPageUrl);
   });
 
   test("renders the 404 template with search and blog return", async ({ page }) => {

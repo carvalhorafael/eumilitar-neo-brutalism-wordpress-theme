@@ -34,10 +34,15 @@ $blog_description  = $posts_page_id ? get_the_excerpt( $posts_page_id ) : get_bl
 
 		<?php eumilitar_render_posts_pagination(); ?>
 	<?php else : ?>
-		<section class="site-empty">
-			<h2><?php esc_html_e( 'Nenhum artigo publicado ainda', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></h2>
-			<p><?php esc_html_e( 'Quando novos conteúdos forem publicados, eles aparecerão nesta página.', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></p>
-		</section>
+		<?php
+		eumilitar_render_editorial_empty_state(
+			array(
+				'description' => __( 'Quando novos conteúdos forem publicados, eles aparecerão nesta página.', 'eumilitar-neo-brutalism-wordpress-theme' ),
+				'show_search' => false,
+				'title'       => __( 'Nenhum artigo publicado ainda', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			)
+		);
+		?>
 	<?php endif; ?>
 </main>
 

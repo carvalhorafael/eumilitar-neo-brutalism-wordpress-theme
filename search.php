@@ -42,10 +42,14 @@ $search_query = get_search_query();
 
 		<?php eumilitar_render_posts_pagination(); ?>
 	<?php else : ?>
-		<section class="site-empty">
-			<h2><?php esc_html_e( 'Nenhum resultado encontrado', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></h2>
-			<p><?php esc_html_e( 'Tente buscar por outro termo ou navegue pelos artigos recentes.', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></p>
-		</section>
+		<?php
+		eumilitar_render_editorial_empty_state(
+			array(
+				'description' => __( 'Tente buscar por outro termo ou navegue pelos artigos recentes.', 'eumilitar-neo-brutalism-wordpress-theme' ),
+				'title'       => __( 'Nenhum resultado encontrado', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			)
+		);
+		?>
 	<?php endif; ?>
 </main>
 

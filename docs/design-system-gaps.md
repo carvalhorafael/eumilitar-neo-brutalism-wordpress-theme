@@ -88,6 +88,22 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Limite encontrado: não há adapter/pattern para o formulário de busca nativo do WordPress, e a saída pode variar entre classes e `role="search"`.
 - Decisão temporária no tema: estilizar as classes nativas do WordPress e `form[role="search"]` com tokens do DS.
 
+### Estado vazio editorial
+
+- Status: gap identificado
+- Locais de uso:
+  - `inc/template-tags.php`
+  - `home.php`
+  - `archive.php`
+  - `category.php`
+  - `tag.php`
+  - `search.php`
+  - `src/styles/theme.css`
+- Necessidade: padrão para páginas editoriais sem conteúdo, com título, descrição, CTA primário e busca opcional.
+- O que existe hoje no DS: primitives de badge, button e input.
+- Limite encontrado: não há componente/pattern de empty state editorial ou adapter para arquivos nativos do WordPress.
+- Decisão temporária no tema: criar helper PHP `eumilitar_render_editorial_empty_state()` e classes locais `site-empty*`.
+
 ### Comentários de artigo
 
 - Status: gap identificado

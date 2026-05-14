@@ -29,10 +29,14 @@ get_header();
 
 		<?php eumilitar_render_posts_pagination(); ?>
 	<?php else : ?>
-		<section class="site-empty">
-			<h2><?php esc_html_e( 'Nenhum artigo nesta categoria', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></h2>
-			<p><?php esc_html_e( 'Quando novos conteúdos forem publicados, eles aparecerão aqui.', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></p>
-		</section>
+		<?php
+		eumilitar_render_editorial_empty_state(
+			array(
+				'description' => __( 'Quando novos conteúdos forem publicados nesta categoria, eles aparecerão aqui.', 'eumilitar-neo-brutalism-wordpress-theme' ),
+				'title'       => __( 'Nenhum artigo nesta categoria', 'eumilitar-neo-brutalism-wordpress-theme' ),
+			)
+		);
+		?>
 	<?php endif; ?>
 </main>
 
