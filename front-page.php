@@ -6,6 +6,16 @@
  */
 
 get_header();
+
+$posts_page_id = (int) get_option( 'page_for_posts' );
+$blog_url      = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/' );
+$latest_posts  = get_posts(
+	array(
+		'numberposts' => 1,
+		'post_status' => 'publish',
+	)
+);
+$latest_post_url = $latest_posts ? get_permalink( $latest_posts[0] ) : $blog_url;
 ?>
 
 <main id="primary" class="site-main site-main--landing">
@@ -29,13 +39,13 @@ get_header();
 			'headline'        => 'Prepare-se para as Forças Armadas com uma trilha por edital.',
 			'supporting_copy' => 'Questões, simulados e acompanhamento para acelerar a aprovação.',
 			'primary_cta'     => array(
-				'label'   => 'Começar agora',
-				'href'    => '#planos',
+				'label'   => 'Ver artigos',
+				'href'    => $blog_url,
 				'variant' => 'primary',
 			),
 			'secondary_cta'   => array(
-				'label'   => 'Ver dúvidas',
-				'href'    => '#faq',
+				'label'   => 'Ler artigo recente',
+				'href'    => $latest_post_url,
 				'variant' => 'secondary',
 			),
 		)

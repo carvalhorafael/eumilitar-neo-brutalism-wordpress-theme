@@ -98,3 +98,90 @@ function eumilitar_post_uses_design_system_patterns( $post_id = null ) {
 
 	return false !== strpos( $content, 'eumilitar/' ) || false !== strpos( $content, 'ds-' );
 }
+
+/**
+ * Render post metadata for editorial templates.
+ *
+ * @param int|null $post_id Post ID.
+ * @return void
+ */
+function eumilitar_render_post_meta( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+
+	if ( ! $post_id ) {
+		return;
+	}
+
+	$categories = get_the_category_list( esc_html_x( ', ', 'category list separator', 'eumilitar-neo-brutalism-wordpress-theme' ), '', $post_id );
+	?>
+	<ul class="entry-meta" aria-label="<?php esc_attr_e( 'Informações do artigo', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">
+		<li class="entry-meta__item">
+			<time datetime="<?php echo esc_attr( get_the_date( DATE_W3C, $post_id ) ); ?>">
+				<?php echo esc_html( get_the_date( '', $post_id ) ); ?>
+			</time>
+		</li>
+		<li class="entry-meta__item">
+			<?php
+			printf(
+				/* translators: %s: post author name. */
+				esc_html__( 'Por %s', 'eumilitar-neo-brutalism-wordpress-theme' ),
+				esc_html( get_the_author_meta( 'display_name', (int) get_post_field( 'post_author', $post_id ) ) )
+			);
+			?>
+		</li>
+		<?php if ( $categories ) : ?>
+			<li class="entry-meta__item entry-meta__item--categories">
+				<?php echo wp_kses_post( $categories ); ?>
+			</li>
+		<?php endif; ?>
+	</ul>
+	<?php
+}
+
+/**
+ * Render posts pagination using the design-system pagination primitive.
+ *
+ * @return void
+ */
+function eumilitar_render_posts_pagination() {
+	global $wp_query;
+
+	$total_pages  = isset( $wp_query->max_num_pages ) ? (int) $wp_query->max_num_pages : 1;
+	$current_page = max( 1, (int) get_query_var( 'paged' ) );
+
+	if ( $total_pages <= 1 ) {
+		return;
+	}
+	?>
+	<nav class="ds-pagination posts-pagination" aria-label="<?php esc_attr_e( 'Paginação de artigos', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">
+		<?php if ( $current_page > 1 ) : ?>
+			<a class="ds-pagination__item" href="<?php echo esc_url( get_pagenum_link( $current_page - 1 ) ); ?>" aria-label="<?php esc_attr_e( 'Página anterior', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">
+				<?php esc_html_e( 'Anterior', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>
+			</a>
+		<?php else : ?>
+			<span class="ds-pagination__item" aria-disabled="true"><?php esc_html_e( 'Anterior', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+		<?php endif; ?>
+
+		<div class="ds-pagination__pages">
+			<?php for ( $page = 1; $page <= $total_pages; $page++ ) : ?>
+				<?php if ( $page === $current_page ) : ?>
+					<span class="ds-pagination__item" aria-current="page"><?php echo esc_html( (string) $page ); ?></span>
+				<?php else : ?>
+					<a class="ds-pagination__item" href="<?php echo esc_url( get_pagenum_link( $page ) ); ?>">
+						<span class="screen-reader-text"><?php esc_html_e( 'Página', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+						<?php echo esc_html( (string) $page ); ?>
+					</a>
+				<?php endif; ?>
+			<?php endfor; ?>
+		</div>
+
+		<?php if ( $current_page < $total_pages ) : ?>
+			<a class="ds-pagination__item" href="<?php echo esc_url( get_pagenum_link( $current_page + 1 ) ); ?>" aria-label="<?php esc_attr_e( 'Próxima página', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">
+				<?php esc_html_e( 'Próxima', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>
+			</a>
+		<?php else : ?>
+			<span class="ds-pagination__item" aria-disabled="true"><?php esc_html_e( 'Próxima', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+		<?php endif; ?>
+	</nav>
+	<?php
+}

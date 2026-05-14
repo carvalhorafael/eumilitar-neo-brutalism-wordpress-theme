@@ -278,6 +278,25 @@ Classes base estáveis:
 - `ds-testimonials`
 - `ds-cta`
 
+## Blog e artigos
+
+A camada editorial do blog deve seguir a hierarquia nativa de templates do WordPress para temas clássicos/híbridos.
+
+Estrutura inicial:
+
+- `home.php`: listagem de posts do blog, especialmente quando o WordPress usa front page estática e uma página separada para posts.
+- `single.php`: post individual.
+- `template-parts/content-excerpt.php`: card/teaser reutilizável da listagem.
+- `template-parts/content-single.php`: conteúdo completo de um artigo.
+- `index.php`: fallback obrigatório do tema, não como template principal do blog.
+
+Regras:
+
+- preferir WordPress Loop, `get_template_part()`, `the_post_thumbnail()`, `the_excerpt()`, `wp_link_pages()` e APIs nativas de navegação/paginação;
+- usar primitives do Design System quando existirem, como `.ds-button`, `.ds-badge` e `.ds-pagination`;
+- não recriar tokens visuais no tema;
+- quando faltar componente/pattern editorial no Design System, registrar o gap em `docs/design-system-gaps.md` com local de uso e decisão temporária.
+
 Atributos estáveis para accordion:
 
 - `data-accordion-root`

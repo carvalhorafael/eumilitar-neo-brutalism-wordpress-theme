@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers ::eumilitar_render_action
  * @covers ::eumilitar_render_badge
+ * @covers ::eumilitar_render_post_meta
  * @covers ::eumilitar_post_uses_design_system_patterns
  */
 final class TemplateTagsTest extends TestCase {
@@ -67,5 +68,45 @@ final class TemplateTagsTest extends TestCase {
 		$this->assertTrue( eumilitar_post_uses_design_system_patterns( $post_id ) );
 
 		wp_delete_post( $post_id, true );
+	}
+
+	/**
+	 * Post metadata should expose date, author and categories.
+	 */
+	public function test_post_meta_renders_editorial_context(): void {
+		$category = wp_insert_term(
+			'Estratégia',
+			'category',
+			array(
+				'slug' => 'estrategia-meta-test',
+			)
+		);
+
+		$this->assertIsArray( $category );
+
+		$category_id = (int) $category['term_id'];
+		$post_id     = wp_insert_post(
+			array(
+				'post_title'    => 'Artigo com meta',
+				'post_status'   => 'publish',
+				'post_content'  => 'Conteúdo do artigo.',
+				'post_category' => array( $category_id ),
+			),
+			true
+		);
+
+		$this->assertIsInt( $post_id );
+
+		ob_start();
+		eumilitar_render_post_meta( $post_id );
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'entry-meta', $output );
+		$this->assertStringContainsString( 'Informações do artigo', $output );
+		$this->assertStringContainsString( 'Por', $output );
+		$this->assertStringContainsString( 'Estratégia', $output );
+
+		wp_delete_post( $post_id, true );
+		wp_delete_term( $category_id, 'category' );
 	}
 }
