@@ -17,6 +17,64 @@
   text-transform: uppercase;
 }
 
+.editor-styles-wrapper .is-root-container,
+.editor-styles-wrapper .wp-block-post-content {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.editor-styles-wrapper .is-root-container > * {
+  margin-block: 0;
+}
+
+.editor-styles-wrapper .is-root-container > * + * {
+  margin-block-start: 1.25rem;
+}
+
+.editor-styles-wrapper .is-root-container h2,
+.editor-styles-wrapper .is-root-container h3 {
+  line-height: 1;
+  margin-block-start: 2.5rem;
+}
+
+.editor-styles-wrapper .is-root-container h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.editor-styles-wrapper .is-root-container h3 {
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+}
+
+.editor-styles-wrapper .is-root-container ul,
+.editor-styles-wrapper .is-root-container ol {
+  padding-inline-start: 1.5rem;
+}
+
+.editor-styles-wrapper .is-root-container li + li {
+  margin-block-start: 0.5rem;
+}
+
+.editor-styles-wrapper .is-root-container blockquote {
+  background: var(--surface-raised, #fff8e8);
+  border: 2px solid var(--border-strong, #1a1612);
+  box-shadow: var(--shadow-sm, 3px 3px 0 #1a1612);
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.05;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  text-transform: uppercase;
+}
+
+.editor-styles-wrapper .is-root-container figcaption {
+  color: var(--pencil, #3b342d);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-block-start: 0.5rem;
+  text-transform: uppercase;
+}
+
 .editor-styles-wrapper .ds-hero,
 .editor-styles-wrapper .ds-urgency,
 .editor-styles-wrapper .ds-faq,

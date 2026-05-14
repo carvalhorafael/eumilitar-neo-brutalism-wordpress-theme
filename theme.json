@@ -3,24 +3,157 @@
   "version": 3,
   "settings": {
     "appearanceTools": true,
+    "border": {
+      "color": false,
+      "radius": false,
+      "style": false,
+      "width": false
+    },
+    "color": {
+      "custom": false,
+      "customDuotone": false,
+      "customGradient": false,
+      "defaultDuotone": false,
+      "defaultGradients": false,
+      "defaultPalette": false,
+      "duotone": [],
+      "gradients": [],
+      "palette": [
+        {
+          "color": "#1a1612",
+          "name": "Ink",
+          "slug": "ink"
+        },
+        {
+          "color": "#ede4cf",
+          "name": "Paper",
+          "slug": "paper"
+        },
+        {
+          "color": "#ffffff",
+          "name": "Surface raised",
+          "slug": "surface-raised"
+        },
+        {
+          "color": "#1f4d2a",
+          "name": "Brand",
+          "slug": "brand"
+        },
+        {
+          "color": "#7d7164",
+          "name": "Pencil",
+          "slug": "pencil"
+        },
+        {
+          "color": "#c8bda5",
+          "name": "Border",
+          "slug": "border"
+        }
+      ]
+    },
     "layout": {
       "contentSize": "760px",
       "wideSize": "1120px"
     },
     "spacing": {
       "blockGap": "1.5rem",
+      "customSpacingSize": false,
+      "defaultSpacingSizes": false,
+      "margin": true,
       "padding": true,
-      "margin": true
+      "spacingSizes": [
+        {
+          "name": "Small",
+          "slug": "small",
+          "size": "0.75rem"
+        },
+        {
+          "name": "Medium",
+          "slug": "medium",
+          "size": "1.5rem"
+        },
+        {
+          "name": "Large",
+          "slug": "large",
+          "size": "2.5rem"
+        },
+        {
+          "name": "XL",
+          "slug": "xl",
+          "size": "4rem"
+        }
+      ],
+      "units": ["px", "rem", "%"]
     },
     "typography": {
-      "fluid": true
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "dropCap": false,
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "var(--font-display, system-ui, sans-serif)",
+          "name": "Display",
+          "slug": "display"
+        },
+        {
+          "fontFamily": "var(--font-body, system-ui, sans-serif)",
+          "name": "Body",
+          "slug": "body"
+        },
+        {
+          "fontFamily": "var(--font-mono, monospace)",
+          "name": "Mono",
+          "slug": "mono"
+        }
+      ],
+      "fontSizes": [
+        {
+          "fluid": false,
+          "name": "Small",
+          "size": "0.8125rem",
+          "slug": "small"
+        },
+        {
+          "fluid": false,
+          "name": "Base",
+          "size": "1rem",
+          "slug": "base"
+        },
+        {
+          "fluid": {
+            "max": "1.375rem",
+            "min": "1.125rem"
+          },
+          "name": "Large",
+          "size": "1.25rem",
+          "slug": "large"
+        },
+        {
+          "fluid": {
+            "max": "3rem",
+            "min": "2rem"
+          },
+          "name": "Display",
+          "size": "2.5rem",
+          "slug": "display"
+        }
+      ]
     },
     "useRootPaddingAwareAlignments": true
   },
   "styles": {
+    "color": {
+      "background": "#ede4cf",
+      "text": "#1a1612"
+    },
     "spacing": {
       "blockGap": "1.5rem"
+    },
+    "typography": {
+      "fontFamily": "var(--font-body, system-ui, sans-serif)",
+      "fontSize": "1rem",
+      "lineHeight": "1.5"
     }
   }
 }
-

@@ -56,15 +56,19 @@ O arquivo `.npmrc` real não deve ser commitado.
 Regra padrão:
 
 - não desenvolver diretamente em `main`;
+- usar `develop` como branch auxiliar de integração;
 - criar uma branch de trabalho antes de alterar código;
 - usar prefixo `codex/` para branches criadas por agentes;
 - fazer commits pequenos e intencionais;
 - fazer push da branch para `origin`;
-- levar mudanças para `main` apenas via Pull Request.
+- abrir PRs pequenos para `develop` por padrão;
+- levar mudanças para `main` apenas por PR de release vindo de `develop`.
 
 Exemplo:
 
 ```bash
+git checkout develop
+git pull --ff-only origin develop
 git checkout -b codex/fase-5-editor-elementor
 ```
 
@@ -75,11 +79,11 @@ git status --short --branch
 git branch -vv
 ```
 
-Se o checkout estiver em `main`, criar uma branch antes de editar. Commits diretos em `main` só devem acontecer em situações explicitamente autorizadas pelo usuário ou em bootstrap inicial de repositório vazio.
+Se o checkout estiver em `main`, sincronizar `develop` e criar a branch de trabalho a partir de `develop`, salvo quando a tarefa for explicitamente uma preparação de release para `main`. Commits diretos em `main` ou `develop` só devem acontecer em situações explicitamente autorizadas pelo usuário ou em bootstrap inicial de repositório vazio.
 
 ## Pull Requests e CI
 
-Todo PR para `main` deve passar pelo workflow `CI`.
+Todo PR para `develop` ou `main` deve passar pelo workflow `CI`.
 
 Rotina padrão:
 
@@ -87,15 +91,22 @@ Rotina padrão:
 2. fazer commits pequenos e intencionais;
 3. rodar validações locais quando a mudança tocar build, PHP, assets ou empacotamento;
 4. fazer push da branch;
-5. abrir PR para `main`;
+5. abrir PR para `develop`;
 6. aguardar o workflow `CI` passar antes do merge.
 
-O workflow de CI roda em PRs para `main`, em pushes para `main` e manualmente via `workflow_dispatch`. Ele executa:
+O workflow de CI roda em PRs para `develop` e `main`, em pushes para `develop` e `main`, e manualmente via `workflow_dispatch`. Para PRs pequenos em `develop`, ele executa:
 
 - `npm ci`;
 - `npx playwright install --with-deps chromium`;
 - `npm run wp:start`;
+- `npm run composer:install`;
 - `npm test`;
+- `npm run test:php:coverage`;
+- upload do report HTML de cobertura PHP como artifact;
+- comentário informativo de cobertura em PRs.
+
+Para PRs em `main` e pushes em `main`, o CI também executa:
+
 - `npm run validate`;
 - upload do ZIP gerado em `dist/eumilitar-neo-brutalism-wordpress-theme.zip` como artifact.
 
@@ -161,14 +172,16 @@ A decisão de criar uma nova release é humana. A automação começa quando uma
 
 Rotina padrão de release:
 
-1. criar uma branch de release;
-2. atualizar a versão em `package.json`;
-3. atualizar `Version` em `style.css`;
-4. atualizar `Stable tag` em `readme.txt`;
-5. abrir PR e mergear em `main` após o CI passar;
-6. sincronizar `main` local;
-7. criar tag anotada no formato `vX.Y.Z`;
-8. fazer push da tag.
+1. acumular PRs pequenos em `develop`;
+2. quando a release for decidida, criar uma branch de release a partir de `develop`;
+3. atualizar a versão em `package.json`;
+4. atualizar `Version` em `style.css`;
+5. atualizar `Stable tag` em `readme.txt`;
+6. abrir PR da branch de release para `main`;
+7. mergear em `main` após o CI completo passar;
+8. sincronizar `main` local;
+9. criar tag anotada no formato `vX.Y.Z`;
+10. fazer push da tag.
 
 Exemplo:
 

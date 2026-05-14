@@ -278,6 +278,30 @@ Classes base estáveis:
 - `ds-testimonials`
 - `ds-cta`
 
+## Blog e artigos
+
+A camada editorial do blog deve seguir a hierarquia nativa de templates do WordPress para temas clássicos/híbridos.
+
+Estrutura inicial:
+
+- `home.php`: listagem de posts do blog, especialmente quando o WordPress usa front page estática e uma página separada para posts.
+- `single.php`: post individual.
+- `template-parts/content-excerpt.php`: card/teaser reutilizável da listagem.
+- `template-parts/content-single.php`: conteúdo completo de um artigo.
+- `archive.php`: arquivos gerais do WordPress.
+- `category.php`: arquivo de categoria.
+- `tag.php`: arquivo de tag.
+- `search.php`: resultados de busca.
+- `404.php`: página não encontrada com busca e retorno para artigos.
+- `index.php`: fallback obrigatório do tema, não como template principal do blog.
+
+Regras:
+
+- preferir WordPress Loop, `get_template_part()`, `the_post_thumbnail()`, `the_excerpt()`, `wp_link_pages()` e APIs nativas de navegação/paginação;
+- usar primitives do Design System quando existirem, como `.ds-button`, `.ds-badge` e `.ds-pagination`;
+- não recriar tokens visuais no tema;
+- quando faltar componente/pattern editorial no Design System, registrar o gap em `docs/design-system-gaps.md` com local de uso e decisão temporária.
+
 Atributos estáveis para accordion:
 
 - `data-accordion-root`
@@ -552,6 +576,41 @@ Implementação:
 - `npm run theme:validate-zip` valida a allowlist do ZIP público;
 - `npm run theme:test-install` instala o ZIP em uma cópia limpa da instância de testes;
 - `npm run validate` concentra o fluxo de release local.
+
+## Fase 7 - Widgets e areas editoriais editaveis
+
+Objetivo: permitir que blog, artigos e rodape tenham areas editaveis pelo WordPress sem transformar o tema em uma biblioteca paralela de widgets.
+
+Documento de referencia:
+
+- `docs/widget-strategy.md`
+- `docs/widget-implementation-plan.md`
+
+Tarefas:
+
+- [x] Criar `inc/widgets.php`.
+- [x] Registrar `blog-sidebar`.
+- [ ] Avaliar/registrar `single-post-sidebar` se a leitura do artigo justificar uma sidebar permanente.
+- [x] Registrar `after-post-content`.
+- [x] Registrar `site-footer`.
+- [ ] Avaliar necessidade real de `front-page-aside`.
+- [x] Renderizar sidebar nas listagens editoriais.
+- [x] Renderizar area apos artigo antes dos comentarios.
+- [x] Renderizar area opcional no rodape.
+- [x] Criar styles para `.widget-area`, `.widget`, `.widget__title` e blocos nativos usados em widgets.
+- [x] Criar patterns de composicao para sidebar/apos artigo quando fizer sentido.
+- [x] Atualizar `docs/design-system-gaps.md` para todo adapter local sem equivalente no Design System.
+- [x] Adicionar testes PHPUnit para areas registradas.
+- [x] Adicionar smoke E2E desktop para blog com sidebar.
+- [x] Adicionar smoke E2E mobile para blog com sidebar.
+
+Critério de aceite:
+
+- as areas aparecem no admin moderno de Widgets;
+- as areas vazias nao geram markup visual quebrado;
+- blog e artigo continuam responsivos em mobile;
+- widgets nativos de busca, posts recentes, categorias e tags ficam coerentes com o Design System;
+- qualquer componente local usado por falta de equivalente no Design System fica documentado em `docs/design-system-gaps.md`.
 
 ## Rotina de atualização do design system
 

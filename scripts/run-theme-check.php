@@ -16,6 +16,7 @@ add_filter(
 			$directories,
 			array(
 				'assets/dist',
+				'coverage',
 				'dist',
 				'docs',
 				'scripts',
