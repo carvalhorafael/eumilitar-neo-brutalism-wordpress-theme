@@ -23,6 +23,36 @@ const setWpOption = (name, value) => {
   }
 };
 
+const cleanupE2eContent = () => {
+  runWpCli([
+    "eval",
+    `
+    $posts = get_posts(array(
+      'fields' => 'ids',
+      'numberposts' => -1,
+      'post_status' => 'any',
+      'post_type' => array('page', 'post'),
+    ));
+    foreach ($posts as $post_id) {
+      $post_name = get_post_field('post_name', $post_id);
+      if (0 === strpos($post_name, 'e2e-blog-')) {
+        wp_delete_post($post_id, true);
+      }
+    }
+    foreach (array('rotina-e2e', 'edital-e2e') as $slug) {
+      $category = get_term_by('slug', $slug, 'category');
+      if ($category) {
+        wp_delete_term($category->term_id, 'category');
+      }
+      $tag = get_term_by('slug', $slug, 'post_tag');
+      if ($tag) {
+        wp_delete_term($tag->term_id, 'post_tag');
+      }
+    }
+    `,
+  ]);
+};
+
 test.describe("EuMilitar theme front end", () => {
   test("renders the landing page and loads theme assets", async ({ page }) => {
     const consoleErrors = [];
@@ -78,6 +108,9 @@ test.describe("EuMilitar blog templates", () => {
   let categoryUrl;
   let frontPageId;
   let firstPostId;
+  let originalPageForPosts;
+  let originalPageOnFront;
+  let originalShowOnFront;
   let tagUrl;
 
   test.beforeAll(({}, testInfo) => {
@@ -85,35 +118,18 @@ test.describe("EuMilitar blog templates", () => {
       return;
     }
 
-    const existingPosts = runWpCli(["post", "list", "--post_type=post", "--format=ids"]);
-    const existingBlogPages = runWpCli(["post", "list", "--post_type=page", "--name=artigos-e2e", "--format=ids"]);
-    const existingFrontPages = runWpCli(["post", "list", "--post_type=page", "--name=home-e2e", "--format=ids"]);
-
-    if (existingPosts) {
-      existingPosts.split(/\s+/).forEach((postId) => {
-        tryRunWpCli(["post", "delete", "--force", postId]);
-      });
-    }
-
-    if (existingBlogPages) {
-      existingBlogPages.split(/\s+/).forEach((postId) => {
-        tryRunWpCli(["post", "delete", "--force", postId]);
-      });
-    }
-
-    if (existingFrontPages) {
-      existingFrontPages.split(/\s+/).forEach((postId) => {
-        tryRunWpCli(["post", "delete", "--force", postId]);
-      });
-    }
+    originalShowOnFront = tryRunWpCli(["option", "get", "show_on_front"]) || "posts";
+    originalPageOnFront = tryRunWpCli(["option", "get", "page_on_front"]) || "0";
+    originalPageForPosts = tryRunWpCli(["option", "get", "page_for_posts"]) || "0";
+    cleanupE2eContent();
 
     blogPageId = runWpCli([
       "post",
       "create",
       "--post_type=page",
       "--post_status=publish",
-      "--post_title=Artigos",
-      "--post_name=artigos-e2e",
+      "--post_title=Artigos E2E",
+      "--post_name=e2e-blog-artigos",
       "--post_content=Conteúdos e orientações para sua preparação.",
       "--porcelain",
     ]);
@@ -123,7 +139,7 @@ test.describe("EuMilitar blog templates", () => {
       "--post_type=page",
       "--post_status=publish",
       "--post_title=Home E2E",
-      "--post_name=home-e2e",
+      "--post_name=e2e-blog-home",
       "--post_content=Página inicial temporária para testes.",
       "--porcelain",
     ]);
@@ -137,7 +153,8 @@ test.describe("EuMilitar blog templates", () => {
       "create",
       "--post_type=post",
       "--post_status=publish",
-      "--post_title=Como organizar a rotina de estudos",
+      "--post_title=Como organizar a rotina de estudos E2E",
+      "--post_name=e2e-blog-como-organizar-a-rotina-de-estudos",
       "--post_content=Um roteiro prático para organizar a semana de estudos.",
       "--porcelain",
     ]);
@@ -152,7 +169,8 @@ test.describe("EuMilitar blog templates", () => {
       "create",
       "--post_type=post",
       "--post_status=publish",
-      "--post_title=Como revisar antes do simulado",
+      "--post_title=Como revisar antes do simulado E2E",
+      "--post_name=e2e-blog-como-revisar-antes-do-simulado",
       "--post_content=Dicas para revisar sem perder o foco no edital.",
     ]);
   });
@@ -162,25 +180,26 @@ test.describe("EuMilitar blog templates", () => {
       return;
     }
 
-    setWpOption("show_on_front", "posts");
-    setWpOption("page_on_front", "0");
-    setWpOption("page_for_posts", "0");
+    setWpOption("show_on_front", originalShowOnFront || "posts");
+    setWpOption("page_on_front", originalPageOnFront || "0");
+    setWpOption("page_for_posts", originalPageForPosts || "0");
+    cleanupE2eContent();
   });
 
   test("renders the blog post index with article cards", async ({ page }) => {
     await page.goto(blogPageUrl);
 
-    await expect(page.locator(".blog-header__title")).toHaveText("Artigos");
-    await expect(page.locator(".post-card")).toHaveCount(2);
-    await expect(page.locator(".post-card__media--placeholder")).toHaveCount(2);
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos" })).toBeVisible();
+    await expect(page.locator(".blog-header__title")).toHaveText("Artigos E2E");
+    expect(await page.locator(".post-card").count()).toBeGreaterThanOrEqual(2);
+    expect(await page.locator(".post-card__media--placeholder").count()).toBeGreaterThanOrEqual(2);
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
     await expect(page.locator(".entry-meta").first()).toBeVisible();
   });
 
   test("renders a single blog post with post navigation", async ({ page }) => {
     await page.goto(`/?p=${firstPostId}`);
 
-    await expect(page.locator(".single-post-entry__title")).toHaveText("Como organizar a rotina de estudos");
+    await expect(page.locator(".single-post-entry__title")).toHaveText("Como organizar a rotina de estudos E2E");
     await expect(page.locator(".single-post-entry__content")).toContainText(
       "Um roteiro prático para organizar a semana de estudos.",
     );
@@ -193,16 +212,16 @@ test.describe("EuMilitar blog templates", () => {
     await page.goto(categoryUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Rotina E2E");
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos" })).toBeVisible();
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
 
     await page.goto(tagUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Edital E2E");
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos" })).toBeVisible();
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
 
-    await page.goto("/?s=rotina");
+    await page.goto("/?s=E2E");
 
-    await expect(page.locator(".blog-header__title")).toContainText("Resultados para rotina");
+    await expect(page.locator(".blog-header__title")).toContainText("Resultados para E2E");
     await expect(page.locator('form[role="search"]')).toBeVisible();
   });
 
