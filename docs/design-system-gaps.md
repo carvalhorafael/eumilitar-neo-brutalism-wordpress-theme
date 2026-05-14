@@ -87,3 +87,15 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - O que existe hoje no DS: primitives de input e button, mas o formulário padrão do WordPress vem com classes próprias (`search-form`, `search-field`, `search-submit`).
 - Limite encontrado: não há adapter/pattern para o formulário de busca nativo do WordPress, e a saída pode variar entre classes e `role="search"`.
 - Decisão temporária no tema: estilizar as classes nativas do WordPress e `form[role="search"]` com tokens do DS.
+
+### Comentários de artigo
+
+- Status: gap identificado
+- Locais de uso:
+  - `comments.php`
+  - `single.php`
+  - `src/styles/theme.css`
+- Necessidade: padrão visual para discussão editorial com lista de comentários, respostas, paginação e formulário nativo do WordPress.
+- O que existe hoje no DS: primitives de card, button, badge e inputs.
+- Limite encontrado: não há componente/pattern para comments thread nem adapter para `wp_list_comments()` e `comment_form()`.
+- Decisão temporária no tema: implementar `comments.php` com funções nativas do WordPress e estilizar classes padrão de comentários com tokens/primitives do DS.

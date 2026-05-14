@@ -26,6 +26,7 @@ final class ThemeSetupTest extends TestCase {
 			'editor-styles',
 			'responsive-embeds',
 			'wp-block-styles',
+			'html5',
 		);
 
 		foreach ( $supports as $support ) {
@@ -41,5 +42,14 @@ final class ThemeSetupTest extends TestCase {
 
 		$this->assertArrayHasKey( 'primary', $menus );
 		$this->assertSame( 'Menu principal', $menus['primary'] );
+	}
+
+	/**
+	 * HTML5 support should include native comment and search markup.
+	 */
+	public function test_html5_support_includes_comment_markup(): void {
+		$this->assertTrue( current_theme_supports( 'html5', 'comment-form' ) );
+		$this->assertTrue( current_theme_supports( 'html5', 'comment-list' ) );
+		$this->assertTrue( current_theme_supports( 'html5', 'search-form' ) );
 	}
 }

@@ -23,6 +23,15 @@ function eumilitar_theme_setup() {
 	add_theme_support( 'editor-styles' );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'wp-block-styles' );
+	add_theme_support(
+		'html5',
+		array(
+			'comment-form',
+			'comment-list',
+			'gallery',
+			'search-form',
+		)
+	);
 
 	register_nav_menus(
 		array(

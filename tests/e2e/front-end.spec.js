@@ -174,7 +174,17 @@ test.describe("EuMilitar blog templates", () => {
       "--post_title=Como organizar a rotina de estudos E2E",
       "--post_name=e2e-blog-como-organizar-a-rotina-de-estudos",
       "--post_content=Um roteiro prático para organizar a semana de estudos.",
+      "--comment_status=open",
       "--porcelain",
+    ]);
+    runWpCli([
+      "comment",
+      "create",
+      `--comment_post_ID=${firstPostId}`,
+      "--comment_author=Aluno E2E",
+      "--comment_author_email=aluno-e2e@example.com",
+      "--comment_content=Esse roteiro ajudou a organizar a revisão.",
+      "--comment_approved=1",
     ]);
     tryRunWpCli(["term", "create", "category", "Rotina E2E", "--slug=rotina-e2e"]);
     tryRunWpCli(["term", "create", "post_tag", "Edital E2E", "--slug=edital-e2e"]);
@@ -234,6 +244,10 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".entry-meta")).toBeVisible();
     await expect(page.locator(".entry-taxonomy")).toBeVisible();
     await expect(page.locator(".post-navigation")).toBeVisible();
+    await expect(page.locator(".comments-area")).toBeVisible();
+    await expect(page.locator(".comment-list")).toContainText("Esse roteiro ajudou a organizar a revisão.");
+    await expect(page.locator(".comment-reply-title")).toContainText("Deixe um comentário");
+    await expect(page.locator("#comment")).toBeVisible();
   });
 
   test("renders category, tag and search editorial templates", async ({ page }) => {

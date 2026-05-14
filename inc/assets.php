@@ -13,6 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enqueue frontend assets.
  */
 function eumilitar_enqueue_assets() {
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+
 	if ( eumilitar_vite_is_development() && eumilitar_vite_dev_server_is_running() ) {
 		wp_enqueue_script( 'eumilitar-vite-client', EUMILITAR_VITE_DEV_SERVER . '/@vite/client', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_script( 'eumilitar-theme', EUMILITAR_VITE_DEV_SERVER . '/src/main.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
