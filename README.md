@@ -43,6 +43,32 @@ npm run validate
 
 Esse comando roda build Vite, instala as dependências PHP no container, valida sintaxe PHP, executa PHPCS com WordPress Coding Standards, roda Theme Check contra o tema, gera o ZIP público, confere a allowlist do pacote e testa a instalação do ZIP em uma cópia limpa do WordPress de testes.
 
+## Testes automatizados
+
+```bash
+npm test
+```
+
+Esse comando roda as camadas automatizadas do tema:
+
+- `npm run test:static`: build, sintaxe PHP, PHPCS e Theme Check;
+- `npm run test:php`: PHPUnit dentro do WordPress de testes do `wp-env`;
+- `npm run test:e2e`: Playwright no front-end em desktop e mobile, smoke do editor em desktop, interação do accordion e verificação axe de acessibilidade.
+
+Para gerar cobertura PHP informativa:
+
+```bash
+npm run test:php:coverage
+```
+
+Esse comando gera `coverage/php/clover.xml`, `coverage/php/html` e `coverage/php/summary.md`. O CI publica o HTML como artifact e comenta o resumo no PR sem bloquear por percentual.
+
+Para rodar apenas os testes E2E pela primeira vez na máquina, instale os navegadores do Playwright:
+
+```bash
+npx playwright install chromium
+```
+
 ## Pacote do tema
 
 ```bash
