@@ -4,7 +4,7 @@ Contributors: carvalhorafael
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 8.2
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, custom-logo, block-patterns
@@ -32,6 +32,12 @@ Para validar e gerar o pacote distribuível:
 2. npm run theme:zip
 
 == Changelog ==
+
+= 0.2.0 =
+
+* Automação de CI para PRs e main.
+* Automação de releases por tags versionadas.
+* Validação de versão entre package.json, style.css e readme.txt.
 
 = 0.1.0 =
 
