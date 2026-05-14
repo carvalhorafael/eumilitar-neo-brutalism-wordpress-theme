@@ -41,3 +41,9 @@ npm run theme:zip
 ```
 
 O ZIP público é gerado em `dist/` e inclui apenas arquivos necessários para instalar o tema no WordPress.
+
+## Editor e Elementor
+
+Os patterns do tema ficam disponíveis na categoria `EuMilitar` do editor de blocos.
+
+Notas de uso e validação estão em `docs/editor-elementor.md`.

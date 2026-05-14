@@ -3,7 +3,29 @@
   font-family: var(--font-body, system-ui, sans-serif);
 }
 
-.elementor a {
+.elementor a:not(.ds-button) {
   color: inherit;
 }
 
+body.elementor-page .site-main {
+  max-width: none;
+  padding: 0;
+}
+
+body.elementor-page .site-entry {
+  max-width: none;
+}
+
+body.elementor-page .site-entry__header {
+  display: none;
+}
+
+.elementor .ds-hero,
+.elementor .ds-urgency,
+.elementor .ds-faq,
+.elementor .ds-capture,
+.elementor .ds-benefits,
+.elementor .ds-testimonials,
+.elementor .ds-cta {
+  box-sizing: border-box;
+}

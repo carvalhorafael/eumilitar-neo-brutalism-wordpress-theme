@@ -1,5 +1,6 @@
 @import "@carvalhorafael/eumilitar-tokens";
 @import "@carvalhorafael/eumilitar-css";
+@import "./theme.css";
 
 .editor-styles-wrapper {
   background: var(--surface-base, #ede4cf);
@@ -16,3 +17,22 @@
   text-transform: uppercase;
 }
 
+.editor-styles-wrapper .ds-hero,
+.editor-styles-wrapper .ds-urgency,
+.editor-styles-wrapper .ds-faq,
+.editor-styles-wrapper .ds-capture,
+.editor-styles-wrapper .ds-benefits,
+.editor-styles-wrapper .ds-testimonials,
+.editor-styles-wrapper .ds-cta {
+  margin-block: 0;
+}
+
+.editor-styles-wrapper .wp-block-html .ds-hero,
+.editor-styles-wrapper .wp-block-html .ds-urgency,
+.editor-styles-wrapper .wp-block-html .ds-faq,
+.editor-styles-wrapper .wp-block-html .ds-capture,
+.editor-styles-wrapper .wp-block-html .ds-benefits,
+.editor-styles-wrapper .wp-block-html .ds-testimonials,
+.editor-styles-wrapper .wp-block-html .ds-cta {
+  max-width: 100%;
+}

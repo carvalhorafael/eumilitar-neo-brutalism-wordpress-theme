@@ -164,6 +164,10 @@ a {
   max-width: 760px;
 }
 
+.site-entry--design-system {
+  max-width: none;
+}
+
 .site-entry__title {
   font-family: var(--font-display, system-ui, sans-serif);
   font-size: clamp(2rem, 6vw, 4rem);
