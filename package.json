@@ -14,11 +14,16 @@
     "theme:test-install": "npx wp-env run tests-cli bash -lc 'rm -rf /tmp/eumilitar-wp-clean && mkdir -p /tmp/eumilitar-wp-clean && tar -C /var/www/html --exclude=\"./wp-content/themes/eumilitar-neo-brutalism-wordpress-theme\" -cf - . | tar -C /tmp/eumilitar-wp-clean -xf - && wp --path=/tmp/eumilitar-wp-clean theme install /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/dist/eumilitar-neo-brutalism-wordpress-theme.zip --force --activate && wp --path=/tmp/eumilitar-wp-clean theme status eumilitar-neo-brutalism-wordpress-theme'",
     "theme:validate-zip": "node scripts/validate-theme-zip.mjs",
     "release:check-version": "node scripts/validate-release-version.mjs",
+    "test:static": "rm -rf coverage && npm run build && npm run lint:php:syntax && npm run lint:php && npm run theme:check",
+    "test:php": "npx wp-env run tests-cli bash -lc 'cd /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme && vendor/bin/phpunit --configuration phpunit.xml.dist'",
+    "test:php:coverage": "npx wp-env run tests-cli bash -lc 'cd /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme && mkdir -p coverage/php/html && phpdbg -qrr vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover coverage/php/clover.xml --coverage-html coverage/php/html' && node scripts/summarize-php-coverage.mjs",
+    "test:e2e": "playwright test",
+    "test": "npm run test:static && npm run test:php && npm run test:e2e",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",
     "wp:destroy": "wp-env destroy",
     "theme:zip": "npm run build && node scripts/build-theme-zip.mjs",
-    "validate": "npm run build && npm run composer:install && npm run lint:php:syntax && npm run lint:php && npm run theme:check && npm run theme:zip && npm run theme:validate-zip && npm run theme:test-install"
+    "validate": "rm -rf coverage && npm run build && npm run composer:install && npm run lint:php:syntax && npm run lint:php && npm run theme:check && npm run theme:zip && npm run theme:validate-zip && npm run theme:test-install"
   },
   "dependencies": {
     "@carvalhorafael/eumilitar-css": "^0.2.0",
@@ -27,6 +32,9 @@
     "@carvalhorafael/eumilitar-web": "^0.2.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
+    "@wordpress/e2e-test-utils-playwright": "^1.45.0",
     "@wordpress/env": "^10.29.0",
     "vite": "^7.0.0"
   }
