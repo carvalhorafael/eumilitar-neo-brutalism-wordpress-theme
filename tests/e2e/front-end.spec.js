@@ -23,6 +23,14 @@ const setWpOption = (name, value) => {
   }
 };
 
+const expectNoAxeViolations = async (page) => {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+
+  expect(results.violations).toEqual([]);
+};
+
 const cleanupE2eWidgets = () => {
   runWpCli([
     "eval",
@@ -167,11 +175,7 @@ test.describe("EuMilitar theme front end", () => {
   test("has no automatically detectable WCAG A/AA violations on the landing page", async ({ page }) => {
     await page.goto("/");
 
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-      .analyze();
-
-    expect(results.violations).toEqual([]);
+    await expectNoAxeViolations(page);
   });
 });
 
@@ -187,6 +191,7 @@ test.describe("EuMilitar blog templates", () => {
   let originalPageOnFront;
   let originalPostsPerPage;
   let originalShowOnFront;
+  let standardPageUrl;
   let tagUrl;
 
   test.beforeAll(({}, testInfo) => {
@@ -221,12 +226,23 @@ test.describe("EuMilitar blog templates", () => {
       "--post_content=Página inicial temporária para testes.",
       "--porcelain",
     ]);
+    const standardPageId = runWpCli([
+      "post",
+      "create",
+      "--post_type=page",
+      "--post_status=publish",
+      "--post_title=Página comum E2E",
+      "--post_name=e2e-blog-pagina-comum",
+      "--post_content=Conteúdo de página comum para validar o template page.php.",
+      "--porcelain",
+    ]);
 
     setWpOption("show_on_front", "page");
     setWpOption("page_on_front", frontPageId);
     setWpOption("page_for_posts", blogPageId);
     setWpOption("posts_per_page", "2");
     blogPageUrl = runWpCli(["eval", `echo add_query_arg('page_id', ${blogPageId}, home_url('/'));`]);
+    standardPageUrl = runWpCli(["eval", `echo add_query_arg('page_id', ${standardPageId}, home_url('/'));`]);
     firstPostId = runWpCli([
       "post",
       "create",
@@ -322,11 +338,7 @@ test.describe("EuMilitar blog templates", () => {
   test("has no automatically detectable WCAG A/AA violations on the blog index with sidebar", async ({ page }) => {
     await page.goto(blogPageUrl);
 
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-      .analyze();
-
-    expect(results.violations).toEqual([]);
+    await expectNoAxeViolations(page);
   });
 
   test("paginates the blog post index", async ({ page }) => {
@@ -351,6 +363,16 @@ test.describe("EuMilitar blog templates", () => {
     expect(await page.locator(".post-card-compact").count()).toBeLessThanOrEqual(4);
     await expect(page.getByRole("link", { name: "Ver todos" })).toHaveAttribute("href", blogPageUrl);
     await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+  });
+
+  test("renders a standard page through the page template", async ({ page }) => {
+    await page.goto(standardPageUrl);
+
+    await expect(page.locator(".site-main--page")).toBeVisible();
+    await expect(page.locator(".site-entry__title")).toHaveText("Página comum E2E");
+    await expect(page.locator(".site-entry__content")).toContainText(
+      "Conteúdo de página comum para validar o template page.php.",
+    );
   });
 
   test("renders the editable footer widget area when active", async ({ page }) => {
@@ -380,6 +402,12 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".comment-list")).toContainText("Esse roteiro ajudou a organizar a revisão.");
     await expect(page.locator(".comment-reply-title")).toContainText("Deixe um comentário");
     await expect(page.locator("#comment")).toBeVisible();
+  });
+
+  test("has no automatically detectable WCAG A/AA violations on a single post with comments", async ({ page }) => {
+    await page.goto(`/?p=${firstPostId}`);
+
+    await expectNoAxeViolations(page);
   });
 
   test("renders category, tag and search editorial templates", async ({ page }) => {
@@ -415,11 +443,23 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.getByRole("link", { name: "Ver todos os artigos" })).toHaveAttribute("href", blogPageUrl);
   });
 
+  test("has no automatically detectable WCAG A/AA violations on empty search results", async ({ page }) => {
+    await page.goto("/?s=resultado-inexistente-e2e");
+
+    await expectNoAxeViolations(page);
+  });
+
   test("renders the 404 template with search and blog return", async ({ page }) => {
     await page.goto("/?p=999999999");
 
     await expect(page.locator(".error-page__title")).toHaveText("Página não encontrada");
     await expect(page.locator('form[role="search"]')).toBeVisible();
     await expect(page.getByRole("link", { name: "Ver artigos" })).toBeVisible();
+  });
+
+  test("has no automatically detectable WCAG A/AA violations on the 404 template", async ({ page }) => {
+    await page.goto("/?p=999999999");
+
+    await expectNoAxeViolations(page);
   });
 });

@@ -596,7 +596,7 @@ a {
 }
 
 .entry-meta {
-  color: var(--pencil, #3b342d);
+  color: var(--text-secondary, #5a5048);
   display: flex;
   flex-wrap: wrap;
   font-family: var(--font-mono, monospace);
@@ -788,7 +788,7 @@ a {
 }
 
 .single-post-entry__content figcaption {
-  color: var(--pencil, #3b342d);
+  color: var(--text-secondary, #5a5048);
   font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
   font-weight: 700;
@@ -826,7 +826,7 @@ a {
 
 .wp-caption-text,
 .gallery-caption {
-  color: var(--pencil, #3b342d);
+  color: var(--text-secondary, #5a5048);
   font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
   font-weight: 700;
@@ -1038,7 +1038,7 @@ form[role="search"] input[type="submit"] {
 
 .site-empty p,
 .error-page__description {
-  color: var(--pencil, #3b342d);
+  color: var(--text-secondary, #5a5048);
   font-size: clamp(1.0625rem, 2vw, 1.25rem);
   line-height: 1.5;
   margin: 0;
@@ -1133,7 +1133,7 @@ form[role="search"] input[type="submit"] {
 
 .comment-metadata,
 .comment-awaiting-moderation {
-  color: var(--pencil, #3b342d);
+  color: var(--text-secondary, #5a5048);
   font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
   font-weight: 700;

@@ -46,6 +46,13 @@ final class ThemeSetupTest extends TestCase {
 	}
 
 	/**
+	 * Runtime asset version should stay aligned with the public theme version.
+	 */
+	public function test_runtime_theme_version_matches_stylesheet_header(): void {
+		$this->assertSame( wp_get_theme()->get( 'Version' ), EUMILITAR_THEME_VERSION );
+	}
+
+	/**
 	 * HTML5 support should include native comment and search markup.
 	 */
 	public function test_html5_support_includes_comment_markup(): void {

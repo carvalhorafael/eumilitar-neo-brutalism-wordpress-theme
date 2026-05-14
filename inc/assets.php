@@ -114,6 +114,5 @@ function eumilitar_dequeue_widgets_editor_incompatible_scripts() {
 	}
 
 	wp_dequeue_script( 'elementor-ai-gutenberg' );
-	wp_deregister_script( 'elementor-ai-gutenberg' );
 }
 add_action( 'enqueue_block_editor_assets', 'eumilitar_dequeue_widgets_editor_incompatible_scripts', 100 );
