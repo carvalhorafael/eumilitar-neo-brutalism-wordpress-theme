@@ -93,3 +93,5 @@ Para release, use o ZIP gerado em `dist/eumilitar-neo-brutalism-wordpress-theme.
 Os patterns do tema ficam disponíveis na categoria `EuMilitar` do editor de blocos.
 
 Notas de uso e validação estão em `docs/editor-elementor.md`.
+
+Decisões de escopo do tema ficam em `docs/theme-decisions.md`.
