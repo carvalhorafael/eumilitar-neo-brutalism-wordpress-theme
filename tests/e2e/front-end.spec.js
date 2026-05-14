@@ -89,6 +89,24 @@ test.describe("EuMilitar theme front end", () => {
     await expect(panel).toBeVisible();
   });
 
+  test("toggles the mobile navigation menu", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "The hamburger navigation is only visible on mobile.");
+
+    await page.goto("/");
+
+    const trigger = page.locator("[data-navbar-trigger]");
+    const panel = page.locator("#primary-menu-panel");
+
+    await expect(trigger).toBeVisible();
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await expect(panel).toBeHidden();
+
+    await trigger.click();
+
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await expect(panel).toBeVisible();
+  });
+
   test("has no automatically detectable WCAG A/AA violations on the landing page", async ({ page }) => {
     await page.goto("/");
 
@@ -194,6 +212,16 @@ test.describe("EuMilitar blog templates", () => {
     expect(await page.locator(".post-card__media--placeholder").count()).toBeGreaterThanOrEqual(2);
     await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
     await expect(page.locator(".entry-meta").first()).toBeVisible();
+  });
+
+  test("renders recent posts on the front page", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.locator(".home-recent-posts__title")).toHaveText("Artigos recentes");
+    expect(await page.locator(".post-card-compact").count()).toBeGreaterThanOrEqual(2);
+    expect(await page.locator(".post-card-compact").count()).toBeLessThanOrEqual(4);
+    await expect(page.getByRole("link", { name: "Ver todos" })).toHaveAttribute("href", blogPageUrl);
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
   });
 
   test("renders a single blog post with post navigation", async ({ page }) => {

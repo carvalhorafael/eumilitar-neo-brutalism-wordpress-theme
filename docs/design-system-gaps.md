@@ -17,6 +17,18 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Limite encontrado: `.ds-card` é apenas um primitive estrutural; não há componente/pattern editorial de artigo ou post teaser.
 - Decisão temporária no tema: compor o card com `.ds-card`, `.ds-button`, `.ds-badge` e classes locais `post-card*`, incluindo placeholder local quando não houver imagem destacada.
 
+### Seção de artigos recentes / card compacto
+
+- Status: gap identificado
+- Locais de uso:
+  - `front-page.php`
+  - `template-parts/content-compact.php`
+  - `src/styles/theme.css`
+- Necessidade: pattern de homepage para listar 3 ou 4 artigos recentes com card editorial compacto.
+- O que existe hoje no DS: primitive `.ds-card`, `.ds-button`, `.ds-badge` e o card editorial local criado para listagens completas.
+- Limite encontrado: não há pattern de seção editorial recente nem variação compacta de article card para áreas de homepage.
+- Decisão temporária no tema: criar seção local `home-recent-posts*` e card compacto `post-card-compact*`, mantendo metadados via helper WordPress e tokens/primitives do DS.
+
 ### Metadados editoriais de post
 
 - Status: gap identificado

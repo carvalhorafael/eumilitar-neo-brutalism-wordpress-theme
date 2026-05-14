@@ -100,6 +100,62 @@ function eumilitar_post_uses_design_system_patterns( $post_id = null ) {
 }
 
 /**
+ * Get the configured blog index URL.
+ *
+ * @return string
+ */
+function eumilitar_get_blog_url() {
+	$posts_page_id = (int) get_option( 'page_for_posts' );
+
+	if ( $posts_page_id ) {
+		return get_permalink( $posts_page_id );
+	}
+
+	return home_url( '/' );
+}
+
+/**
+ * Render fallback navigation when no WordPress menu is assigned.
+ *
+ * @return void
+ */
+function eumilitar_render_fallback_navigation() {
+	?>
+	<nav id="primary-menu-panel" class="site-navigation ds-navbar__panel site-navigation--fallback" aria-label="<?php esc_attr_e( 'Menu principal', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">
+		<ul id="primary-menu" class="menu">
+			<li class="menu-item">
+				<a class="ds-navbar__link" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Início', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></a>
+			</li>
+			<li class="menu-item">
+				<a class="ds-navbar__link" href="<?php echo esc_url( eumilitar_get_blog_url() ); ?>"><?php esc_html_e( 'Artigos', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></a>
+			</li>
+		</ul>
+	</nav>
+	<?php
+}
+
+/**
+ * Add the design-system navbar link class to primary menu anchors.
+ *
+ * @param array<string, string> $atts Anchor attributes.
+ * @param WP_Post               $menu_item Menu item object.
+ * @param stdClass              $args Menu arguments.
+ * @return array<string, string>
+ */
+function eumilitar_primary_menu_link_attributes( $atts, $menu_item, $args ) {
+	if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+		return $atts;
+	}
+
+	$classes       = empty( $atts['class'] ) ? array() : explode( ' ', $atts['class'] );
+	$classes[]     = 'ds-navbar__link';
+	$atts['class'] = trim( implode( ' ', array_unique( array_filter( $classes ) ) ) );
+
+	return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'eumilitar_primary_menu_link_attributes', 10, 3 );
+
+/**
  * Render post metadata for editorial templates.
  *
  * @param int|null $post_id Post ID.

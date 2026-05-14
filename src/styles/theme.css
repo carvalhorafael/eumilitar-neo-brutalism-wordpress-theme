@@ -126,6 +126,61 @@ a {
   padding: 1rem;
 }
 
+.site-navigation__toggle {
+  display: none;
+  flex-shrink: 0;
+}
+
+.site-navigation {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.site-navigation.ds-navbar__panel {
+  display: flex;
+}
+
+.site-navigation ul {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-navigation a {
+  background: var(--paper, #ede4cf);
+  border: 2px solid var(--border-strong, #1a1612);
+  color: var(--ink, #1a1612);
+  display: inline-flex;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1;
+  min-height: 2.5rem;
+  padding: 0.625rem 0.75rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-navigation a:hover,
+.site-navigation a:focus-visible,
+.site-navigation .current-menu-item > a,
+.site-navigation .current_page_item > a {
+  background: var(--accent, #1f4d2a);
+  color: var(--text-inverse, #fff);
+}
+
+.site-navigation a:focus-visible {
+  box-shadow: var(--shadow-xs, 2px 2px 0 #1a1612);
+  outline: 2px solid var(--accent, #1f4d2a);
+  outline-offset: 2px;
+}
+
 .site-brand {
   color: var(--ink, #1a1612);
   display: inline-flex;
@@ -158,6 +213,46 @@ a {
 .site-main--landing {
   display: grid;
   gap: 0;
+}
+
+.home-recent-posts {
+  border-inline: 2px solid var(--border-strong, #1a1612);
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.home-recent-posts__header {
+  align-items: end;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.home-recent-posts__header .ds-badge {
+  justify-self: start;
+}
+
+.home-recent-posts__title {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  grid-column: 1;
+  line-height: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.home-recent-posts__link {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-self: end;
+}
+
+.home-recent-posts__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .site-entry {
@@ -332,6 +427,44 @@ a {
 
 .post-card__link {
   justify-self: start;
+}
+
+.post-card-compact {
+  background: var(--surface-raised, #fff8e8);
+  border: 2px solid var(--border-strong, #1a1612);
+  box-shadow: var(--shadow-sm, 3px 3px 0 #1a1612);
+  display: grid;
+  gap: 1rem;
+  grid-template-rows: auto 1fr auto;
+  min-height: 15rem;
+  padding: 1rem;
+}
+
+.post-card-compact__title {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 900;
+  line-height: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.post-card-compact__title a,
+.post-card-compact__link {
+  text-decoration: none;
+}
+
+.post-card-compact__title a:hover,
+.post-card-compact__link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.15em;
+}
+
+.post-card-compact__link {
+  align-self: end;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-weight: 800;
 }
 
 .single-post-entry {
@@ -643,6 +776,61 @@ form[role="search"] input[type="submit"] {
 }
 
 @media (max-width: 720px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .site-navigation__toggle {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  .site-navigation.ds-navbar__panel {
+    display: none;
+  }
+
+  .site-header__inner[data-open="true"] .site-navigation.ds-navbar__panel {
+    display: block;
+  }
+
+  .site-navigation {
+    border-top: 2px solid var(--border-strong, #1a1612);
+    padding-top: 1rem;
+    width: 100%;
+  }
+
+  .site-navigation ul {
+    display: grid;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .site-navigation li,
+  .site-navigation a {
+    width: 100%;
+  }
+
+  .home-recent-posts {
+    border-inline: 0;
+    padding-inline: 0;
+  }
+
+  .home-recent-posts__header,
+  .home-recent-posts__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-recent-posts__link {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: start;
+  }
+
+  .post-card-compact {
+    min-height: 12rem;
+  }
+
   .post-card,
   .post-navigation {
     grid-template-columns: 1fr;

@@ -7,11 +7,10 @@
 
 get_header();
 
-$posts_page_id   = (int) get_option( 'page_for_posts' );
-$blog_url        = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/' );
+$blog_url        = eumilitar_get_blog_url();
 $latest_posts    = get_posts(
 	array(
-		'numberposts' => 1,
+		'numberposts' => 4,
 		'post_status' => 'publish',
 	)
 );
@@ -50,6 +49,34 @@ $latest_post_url = $latest_posts ? get_permalink( $latest_posts[0] ) : $blog_url
 			),
 		)
 	);
+
+	if ( $latest_posts ) :
+		?>
+		<section class="home-recent-posts" aria-labelledby="home-recent-posts-title">
+			<div class="home-recent-posts__header">
+				<span class="ds-badge ds-badge--brand"><?php esc_html_e( 'Blog EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+				<h2 id="home-recent-posts-title" class="home-recent-posts__title"><?php esc_html_e( 'Artigos recentes', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></h2>
+				<a class="ds-button ds-button--secondary home-recent-posts__link" href="<?php echo esc_url( $blog_url ); ?>">
+					<?php esc_html_e( 'Ver todos', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>
+				</a>
+			</div>
+
+			<div class="home-recent-posts__grid">
+				<?php
+				foreach ( $latest_posts as $recent_post ) :
+					get_template_part(
+						'template-parts/content',
+						'compact',
+						array(
+							'post_id' => (int) $recent_post->ID,
+						)
+					);
+				endforeach;
+				?>
+			</div>
+		</section>
+		<?php
+	endif;
 
 	get_template_part(
 		'template-parts/patterns/urgency',

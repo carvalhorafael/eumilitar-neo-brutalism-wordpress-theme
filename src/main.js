@@ -1,5 +1,5 @@
 import "./styles/main.css";
-import { enhanceAccordion } from "@carvalhorafael/eumilitar-web";
+import { enhanceAccordion, enhanceNavbar } from "@carvalhorafael/eumilitar-web";
 
 enhanceAccordion(document);
-
+enhanceNavbar(document);

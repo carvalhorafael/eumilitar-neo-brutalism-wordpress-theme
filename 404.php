@@ -7,8 +7,7 @@
 
 get_header();
 
-$posts_page_id = (int) get_option( 'page_for_posts' );
-$blog_url      = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/' );
+$blog_url = eumilitar_get_blog_url();
 ?>
 
 <main id="primary" class="site-main site-main--error">
