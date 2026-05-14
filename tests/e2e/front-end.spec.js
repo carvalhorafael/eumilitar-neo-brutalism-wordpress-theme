@@ -168,7 +168,7 @@ test.describe("EuMilitar blog templates", () => {
     setWpOption("page_on_front", frontPageId);
     setWpOption("page_for_posts", blogPageId);
     setWpOption("posts_per_page", "2");
-    blogPageUrl = runWpCli(["post", "url", blogPageId]);
+    blogPageUrl = runWpCli(["eval", `echo add_query_arg('page_id', ${blogPageId}, home_url('/'));`]);
     firstPostId = runWpCli([
       "post",
       "create",
