@@ -75,8 +75,10 @@ test.describe("EuMilitar blog templates", () => {
 
   let blogPageId;
   let blogPageUrl;
+  let categoryUrl;
   let frontPageId;
   let firstPostId;
+  let tagUrl;
 
   test.beforeAll(({}, testInfo) => {
     if (testInfo.project.name !== "chromium") {
@@ -139,6 +141,12 @@ test.describe("EuMilitar blog templates", () => {
       "--post_content=Um roteiro prático para organizar a semana de estudos.",
       "--porcelain",
     ]);
+    tryRunWpCli(["term", "create", "category", "Rotina E2E", "--slug=rotina-e2e"]);
+    tryRunWpCli(["term", "create", "post_tag", "Edital E2E", "--slug=edital-e2e"]);
+    runWpCli(["post", "term", "add", firstPostId, "category", "rotina-e2e"]);
+    runWpCli(["post", "term", "add", firstPostId, "post_tag", "edital-e2e"]);
+    categoryUrl = runWpCli(["eval", "echo get_term_link('rotina-e2e', 'category');"]);
+    tagUrl = runWpCli(["eval", "echo get_term_link('edital-e2e', 'post_tag');"]);
     runWpCli([
       "post",
       "create",
@@ -179,5 +187,30 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".entry-meta")).toBeVisible();
     await expect(page.locator(".entry-taxonomy")).toBeVisible();
     await expect(page.locator(".post-navigation")).toBeVisible();
+  });
+
+  test("renders category, tag and search editorial templates", async ({ page }) => {
+    await page.goto(categoryUrl);
+
+    await expect(page.locator(".blog-header__title")).toHaveText("Rotina E2E");
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos" })).toBeVisible();
+
+    await page.goto(tagUrl);
+
+    await expect(page.locator(".blog-header__title")).toHaveText("Edital E2E");
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos" })).toBeVisible();
+
+    await page.goto("/?s=rotina");
+
+    await expect(page.locator(".blog-header__title")).toContainText("Resultados para rotina");
+    await expect(page.locator('form[role="search"]')).toBeVisible();
+  });
+
+  test("renders the 404 template with search and blog return", async ({ page }) => {
+    await page.goto("/?p=999999999");
+
+    await expect(page.locator(".error-page__title")).toHaveText("Página não encontrada");
+    await expect(page.locator('form[role="search"]')).toBeVisible();
+    await expect(page.getByRole("link", { name: "Ver artigos" })).toBeVisible();
   });
 });

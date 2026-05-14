@@ -63,3 +63,15 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - O que existe hoje no DS: tokens, primitives e patterns de landing/captura/prova social.
 - Limite encontrado: não há componente/pattern de prose para corpo editorial de artigo.
 - Decisão temporária no tema: estilizar `.single-post-entry__content` localmente usando tokens do DS.
+
+### Search form editorial
+
+- Status: gap identificado
+- Locais de uso:
+  - `search.php`
+  - `404.php`
+  - `src/styles/theme.css`
+- Necessidade: formulário de busca alinhado ao Design System para arquivos editoriais, busca e estado 404.
+- O que existe hoje no DS: primitives de input e button, mas o formulário padrão do WordPress vem com classes próprias (`search-form`, `search-field`, `search-submit`).
+- Limite encontrado: não há adapter/pattern para o formulário de busca nativo do WordPress, e a saída pode variar entre classes e `role="search"`.
+- Decisão temporária no tema: estilizar as classes nativas do WordPress e `form[role="search"]` com tokens do DS.

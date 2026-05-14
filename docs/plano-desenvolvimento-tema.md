@@ -288,6 +288,11 @@ Estrutura inicial:
 - `single.php`: post individual.
 - `template-parts/content-excerpt.php`: card/teaser reutilizável da listagem.
 - `template-parts/content-single.php`: conteúdo completo de um artigo.
+- `archive.php`: arquivos gerais do WordPress.
+- `category.php`: arquivo de categoria.
+- `tag.php`: arquivo de tag.
+- `search.php`: resultados de busca.
+- `404.php`: página não encontrada com busca e retorno para artigos.
 - `index.php`: fallback obrigatório do tema, não como template principal do blog.
 
 Regras:
