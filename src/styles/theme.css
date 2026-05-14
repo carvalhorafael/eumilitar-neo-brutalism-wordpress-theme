@@ -568,6 +568,53 @@ a {
   text-transform: uppercase;
 }
 
+.alignleft {
+  float: left;
+  margin-block: 0.25rem 1rem;
+  margin-inline: 0 1.5rem;
+  max-width: min(50%, 20rem);
+}
+
+.alignright {
+  float: right;
+  margin-block: 0.25rem 1rem;
+  margin-inline: 1.5rem 0;
+  max-width: min(50%, 20rem);
+}
+
+.aligncenter {
+  display: block;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.wp-caption {
+  max-width: 100%;
+}
+
+.wp-caption img {
+  display: block;
+}
+
+.wp-caption-text,
+.gallery-caption {
+  color: var(--pencil, #3b342d);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-block-start: 0.5rem;
+  text-transform: uppercase;
+}
+
+.sticky.post-card {
+  border-left: 0.5rem solid var(--accent, #1f4d2a);
+}
+
+.bypostauthor > .comment-body {
+  border-color: var(--accent, #1f4d2a);
+  box-shadow: var(--shadow-xs, 2px 2px 0 #1a1612);
+}
+
 .entry-taxonomy {
   border-top: 2px solid var(--border-strong, #1a1612);
   display: grid;
@@ -1040,6 +1087,13 @@ form[role="search"] input[type="submit"] {
 
   .post-card-compact {
     min-height: 12rem;
+  }
+
+  .alignleft,
+  .alignright {
+    float: none;
+    margin-inline: 0;
+    max-width: 100%;
   }
 
   .post-card,

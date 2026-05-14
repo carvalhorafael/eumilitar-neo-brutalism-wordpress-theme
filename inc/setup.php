@@ -32,6 +32,7 @@ function eumilitar_theme_setup() {
 			'search-form',
 		)
 	);
+	add_editor_style( eumilitar_get_editor_stylesheets() );
 
 	register_nav_menus(
 		array(
@@ -40,3 +41,20 @@ function eumilitar_theme_setup() {
 	);
 }
 add_action( 'after_setup_theme', 'eumilitar_theme_setup' );
+
+/**
+ * Get stylesheets that should be loaded inside the block editor canvas.
+ *
+ * @return string[]
+ */
+function eumilitar_get_editor_stylesheets() {
+	if ( function_exists( 'eumilitar_vite_manifest_entry' ) && function_exists( 'eumilitar_vite_asset_uri' ) ) {
+		$entry = eumilitar_vite_manifest_entry( 'src/editor.js' );
+
+		if ( ! empty( $entry['css'] ) && is_array( $entry['css'] ) ) {
+			return array_map( 'eumilitar_vite_asset_uri', $entry['css'] );
+		}
+	}
+
+	return array( get_stylesheet_uri() );
+}
