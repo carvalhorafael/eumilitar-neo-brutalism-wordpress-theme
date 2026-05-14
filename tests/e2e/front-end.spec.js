@@ -23,6 +23,59 @@ const setWpOption = (name, value) => {
   }
 };
 
+const cleanupE2eWidgets = () => {
+  runWpCli([
+    "eval",
+    `
+    $widget_ids = array('block-901', 'block-902', 'block-903', 'block-904', 'block-905');
+    $sidebars = wp_get_sidebars_widgets();
+    foreach ($sidebars as $sidebar_id => $widgets) {
+      if (! is_array($widgets)) {
+        continue;
+      }
+      $sidebars[$sidebar_id] = array_values(array_diff($widgets, $widget_ids));
+    }
+    wp_set_sidebars_widgets($sidebars);
+
+    $widget_blocks = get_option('widget_block', array());
+    foreach (array(901, 902, 903, 904, 905) as $id) {
+      unset($widget_blocks[$id]);
+    }
+    update_option('widget_block', $widget_blocks);
+    `,
+  ]);
+};
+
+const seedBlogSidebarWidgets = () => {
+  runWpCli([
+    "eval",
+    `
+    $widget_blocks = get_option('widget_block', array());
+    $widget_blocks[901] = array(
+      'content' => '<!-- wp:search {"label":"Buscar no blog","buttonText":"Buscar"} /-->',
+    );
+    $widget_blocks[902] = array(
+      'content' => '<!-- wp:latest-posts {"postsToShow":3,"displayPostDate":true} /-->',
+    );
+    $widget_blocks[903] = array(
+      'content' => '<!-- wp:categories /-->',
+    );
+    $widget_blocks[904] = array(
+      'content' => '<!-- wp:tag-cloud {"taxonomy":"post_tag"} /-->',
+    );
+    $widget_blocks[905] = array(
+      'content' => '<!-- wp:group {"className":"widget-cta"} --><div class="wp-block-group widget-cta"><!-- wp:paragraph {"className":"ds-badge ds-badge--brand"} --><p class="ds-badge ds-badge--brand">Preparação EuMilitar</p><!-- /wp:paragraph --><!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Continue sua preparação</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Avance para uma trilha organizada por edital.</p><!-- /wp:paragraph --></div><!-- /wp:group -->',
+    );
+    update_option('widget_block', $widget_blocks);
+
+    $sidebars = wp_get_sidebars_widgets();
+    $sidebars['blog-sidebar'] = array('block-901', 'block-902', 'block-903', 'block-904');
+    $sidebars['after-post-content'] = array('block-905');
+    wp_set_sidebars_widgets($sidebars);
+    `,
+  ]);
+};
+
 const cleanupE2eContent = () => {
   runWpCli([
     "eval",
@@ -142,6 +195,7 @@ test.describe("EuMilitar blog templates", () => {
     originalPageForPosts = tryRunWpCli(["option", "get", "page_for_posts"]) || "0";
     originalPostsPerPage = tryRunWpCli(["option", "get", "posts_per_page"]) || "10";
     cleanupE2eContent();
+    cleanupE2eWidgets();
 
     blogPageId = runWpCli([
       "post",
@@ -195,6 +249,7 @@ test.describe("EuMilitar blog templates", () => {
     runWpCli(["post", "term", "add", firstPostId, "post_tag", "edital-e2e"]);
     categoryUrl = runWpCli(["eval", "echo get_term_link('rotina-e2e', 'category');"]);
     tagUrl = runWpCli(["eval", "echo get_term_link('edital-e2e', 'post_tag');"]);
+    seedBlogSidebarWidgets();
     runWpCli([
       "post",
       "create",
@@ -224,6 +279,7 @@ test.describe("EuMilitar blog templates", () => {
     setWpOption("page_on_front", originalPageOnFront || "0");
     setWpOption("page_for_posts", originalPageForPosts || "0");
     setWpOption("posts_per_page", originalPostsPerPage || "10");
+    cleanupE2eWidgets();
     cleanupE2eContent();
   });
 
@@ -231,6 +287,12 @@ test.describe("EuMilitar blog templates", () => {
     await page.goto(blogPageUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Artigos E2E");
+    await expect(page.locator(".content-sidebar-layout")).toBeVisible();
+    await expect(page.locator(".widget-area--blog")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-search")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-latest-posts")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-categories")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-tag-cloud")).toBeVisible();
     expect(await page.locator(".post-card").count()).toBeGreaterThanOrEqual(2);
     expect(await page.locator(".post-card__media--placeholder").count()).toBeGreaterThanOrEqual(2);
     await expect(page.locator(".post-card__title").first()).toBeVisible();
@@ -271,6 +333,8 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".entry-meta")).toBeVisible();
     await expect(page.locator(".entry-taxonomy")).toBeVisible();
     await expect(page.locator(".post-navigation")).toBeVisible();
+    await expect(page.locator(".widget-area--after-post")).toBeVisible();
+    await expect(page.locator(".widget-area--after-post")).toContainText("Continue sua preparação");
     await expect(page.locator(".comments-area")).toBeVisible();
     await expect(page.locator(".comment-list")).toContainText("Esse roteiro ajudou a organizar a revisão.");
     await expect(page.locator(".comment-reply-title")).toContainText("Deixe um comentário");
@@ -281,17 +345,27 @@ test.describe("EuMilitar blog templates", () => {
     await page.goto(categoryUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Rotina E2E");
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+    await expect(
+      page.locator(".content-sidebar-layout__main").getByRole("link", {
+        exact: true,
+        name: "Como organizar a rotina de estudos E2E",
+      }),
+    ).toBeVisible();
 
     await page.goto(tagUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Edital E2E");
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+    await expect(
+      page.locator(".content-sidebar-layout__main").getByRole("link", {
+        exact: true,
+        name: "Como organizar a rotina de estudos E2E",
+      }),
+    ).toBeVisible();
 
     await page.goto("/?s=E2E");
 
     await expect(page.locator(".blog-header__title")).toContainText("Resultados para E2E");
-    await expect(page.locator('form[role="search"]')).toBeVisible();
+    await expect(page.locator('.blog-header form[role="search"]')).toBeVisible();
 
     await page.goto("/?s=resultado-inexistente-e2e");
 

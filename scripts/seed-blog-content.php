@@ -119,6 +119,45 @@ function eumilitar_seed_post_content( $topic ) {
 HTML;
 }
 
+/**
+ * Seed the blog sidebar with native block widgets.
+ *
+ * @return void
+ */
+function eumilitar_seed_blog_sidebar_widgets() {
+	$widget_blocks = get_option( 'widget_block', array() );
+
+	$widget_blocks[701] = array(
+		'content' => '<!-- wp:search {"label":"Buscar no blog","buttonText":"Buscar"} /-->',
+	);
+	$widget_blocks[702] = array(
+		'content' => '<!-- wp:latest-posts {"postsToShow":4,"displayPostDate":true} /-->',
+	);
+	$widget_blocks[703] = array(
+		'content' => '<!-- wp:categories /-->',
+	);
+	$widget_blocks[704] = array(
+		'content' => '<!-- wp:tag-cloud {"taxonomy":"post_tag"} /-->',
+	);
+	$widget_blocks[705] = array(
+		'content' => '<!-- wp:group {"className":"widget-cta"} --><div class="wp-block-group widget-cta"><!-- wp:paragraph {"className":"ds-badge ds-badge--brand"} --><p class="ds-badge ds-badge--brand">Preparação EuMilitar</p><!-- /wp:paragraph --><!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Continue sua preparação</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Use os artigos como ponto de partida e avance para uma trilha organizada por edital.</p><!-- /wp:paragraph --><!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button {"className":"ds-button ds-button--primary"} --><div class="wp-block-button ds-button ds-button--primary"><a class="wp-block-button__link wp-element-button" href="/">Ver trilhas</a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:group -->',
+	);
+
+	update_option( 'widget_block', $widget_blocks );
+
+	$sidebars                         = wp_get_sidebars_widgets();
+	$sidebars['blog-sidebar']         = array( 'block-701', 'block-702', 'block-703', 'block-704' );
+	$sidebars['after-post-content']   = array( 'block-705' );
+	$sidebars['wp_inactive_widgets']  = array_values(
+		array_diff(
+			$sidebars['wp_inactive_widgets'] ?? array(),
+			array_merge( $sidebars['blog-sidebar'], $sidebars['after-post-content'] )
+		)
+	);
+
+	wp_set_sidebars_widgets( $sidebars );
+}
+
 $blog_page_id = eumilitar_seed_blog_page();
 
 update_option( 'posts_per_page', 4 );
@@ -278,8 +317,10 @@ foreach ( $posts as $index => $seed_post ) {
 	$created_or_updated++;
 }
 
+eumilitar_seed_blog_sidebar_widgets();
+
 printf(
-	"Seed concluído: %d posts atualizados/criados, blog page ID %d, post principal ID %d.\n",
+	"Seed concluído: %d posts atualizados/criados, blog page ID %d, post principal ID %d, blog-sidebar populada.\n",
 	(int) $created_or_updated,
 	(int) $blog_page_id,
 	(int) $first_post_id
