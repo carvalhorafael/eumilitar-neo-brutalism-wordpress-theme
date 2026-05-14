@@ -27,7 +27,7 @@ const cleanupE2eWidgets = () => {
   runWpCli([
     "eval",
     `
-    $widget_ids = array('block-901', 'block-902', 'block-903', 'block-904', 'block-905');
+    $widget_ids = array('block-901', 'block-902', 'block-903', 'block-904', 'block-905', 'block-906');
     $sidebars = wp_get_sidebars_widgets();
     foreach ($sidebars as $sidebar_id => $widgets) {
       if (! is_array($widgets)) {
@@ -38,7 +38,7 @@ const cleanupE2eWidgets = () => {
     wp_set_sidebars_widgets($sidebars);
 
     $widget_blocks = get_option('widget_block', array());
-    foreach (array(901, 902, 903, 904, 905) as $id) {
+    foreach (array(901, 902, 903, 904, 905, 906) as $id) {
       unset($widget_blocks[$id]);
     }
     update_option('widget_block', $widget_blocks);
@@ -66,11 +66,15 @@ const seedBlogSidebarWidgets = () => {
     $widget_blocks[905] = array(
       'content' => '<!-- wp:group {"className":"widget-cta"} --><div class="wp-block-group widget-cta"><!-- wp:paragraph {"className":"ds-badge ds-badge--brand"} --><p class="ds-badge ds-badge--brand">Preparação EuMilitar</p><!-- /wp:paragraph --><!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Continue sua preparação</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Avance para uma trilha organizada por edital.</p><!-- /wp:paragraph --></div><!-- /wp:group -->',
     );
+    $widget_blocks[906] = array(
+      'content' => '<!-- wp:paragraph --><p>Rodapé editorial E2E</p><!-- /wp:paragraph --><!-- wp:categories /-->',
+    );
     update_option('widget_block', $widget_blocks);
 
     $sidebars = wp_get_sidebars_widgets();
     $sidebars['blog-sidebar'] = array('block-901', 'block-902', 'block-903', 'block-904');
     $sidebars['after-post-content'] = array('block-905');
+    $sidebars['site-footer'] = array('block-906');
     wp_set_sidebars_widgets($sidebars);
     `,
   ]);
@@ -315,6 +319,16 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".widget-area--blog")).toBeVisible();
   });
 
+  test("has no automatically detectable WCAG A/AA violations on the blog index with sidebar", async ({ page }) => {
+    await page.goto(blogPageUrl);
+
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
+
+    expect(results.violations).toEqual([]);
+  });
+
   test("paginates the blog post index", async ({ page }) => {
     await page.goto(blogPageUrl);
 
@@ -337,6 +351,17 @@ test.describe("EuMilitar blog templates", () => {
     expect(await page.locator(".post-card-compact").count()).toBeLessThanOrEqual(4);
     await expect(page.getByRole("link", { name: "Ver todos" })).toHaveAttribute("href", blogPageUrl);
     await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+  });
+
+  test("renders the editable footer widget area when active", async ({ page }) => {
+    await page.goto(blogPageUrl);
+
+    const footerWidgetArea = page.locator(".site-footer .widget-area--footer");
+
+    await expect(footerWidgetArea).toBeVisible();
+    await expect(footerWidgetArea).toContainText("Rodapé editorial E2E");
+    await expect(footerWidgetArea.locator(".wp-block-categories")).toBeVisible();
+    await expect(page.locator(".site-footer__text")).toBeVisible();
   });
 
   test("renders a single blog post with post navigation", async ({ page }) => {

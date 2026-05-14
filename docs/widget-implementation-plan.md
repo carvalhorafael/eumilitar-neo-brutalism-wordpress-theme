@@ -146,7 +146,7 @@ Tarefas:
 - [x] Garantir cleanup/isolamento nos testes E2E para nao depender de estado manual do admin.
 - [x] Adicionar smoke E2E para sidebar em desktop.
 - [x] Adicionar smoke E2E para empilhamento mobile.
-- [ ] Rodar axe na pagina de blog com sidebar ativa.
+- [x] Rodar axe na pagina de blog com sidebar ativa.
 
 Critérios de aceite:
 
@@ -204,7 +204,7 @@ Tarefas:
 - [x] Preservar conteudo institucional atual do footer, se houver.
 - [x] Criar grid responsivo para blocos no rodape.
 - [x] Estilizar blocos de navegacao/listas no contexto do footer.
-- [ ] Adicionar teste simples para footer com area ativa.
+- [x] Adicionar teste simples para footer com area ativa.
 
 Critérios de aceite:
 
@@ -267,7 +267,7 @@ Tarefas:
 - [x] Atualizar `docs/widget-strategy.md` com decisoes finais tomadas durante implementacao.
 - [x] Revisar `docs/design-system-gaps.md` para remover duplicidade ou registrar novos gaps descobertos.
 - [x] Confirmar que novos arquivos entram no ZIP publico quando necessario.
-- [ ] Rodar validacao completa.
+- [x] Rodar validacao completa.
 
 Critérios de aceite:
 

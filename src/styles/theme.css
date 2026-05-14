@@ -302,7 +302,7 @@ a {
 }
 
 .blog-header__description {
-  color: var(--pencil, #3b342d);
+  color: var(--ink, #1a1612);
   font-size: clamp(1.0625rem, 2vw, 1.25rem);
   line-height: 1.5;
   margin: 0;
