@@ -3,9 +3,11 @@ name: CI
 on:
   pull_request:
     branches:
+      - develop
       - main
   push:
     branches:
+      - develop
       - main
   workflow_dispatch:
 
@@ -55,6 +57,7 @@ jobs:
         run: npm test
 
       - name: Validate release package
+        if: github.base_ref == 'main' || (github.event_name == 'push' && github.ref_name == 'main')
         run: npm run validate
 
       - name: Generate PHP coverage report
@@ -103,6 +106,7 @@ jobs:
             }
 
       - name: Upload theme ZIP
+        if: github.base_ref == 'main' || (github.event_name == 'push' && github.ref_name == 'main')
         uses: actions/upload-artifact@v5
         with:
           name: eumilitar-neo-brutalism-wordpress-theme
