@@ -13,6 +13,7 @@
     "theme:check": "npx wp-env run cli wp eval-file /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/scripts/run-theme-check.php",
     "theme:test-install": "npx wp-env run tests-cli bash -lc 'rm -rf /tmp/eumilitar-wp-clean && mkdir -p /tmp/eumilitar-wp-clean && tar -C /var/www/html --exclude=\"./wp-content/themes/eumilitar-neo-brutalism-wordpress-theme\" -cf - . | tar -C /tmp/eumilitar-wp-clean -xf - && wp --path=/tmp/eumilitar-wp-clean theme install /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/dist/eumilitar-neo-brutalism-wordpress-theme.zip --force --activate && wp --path=/tmp/eumilitar-wp-clean theme status eumilitar-neo-brutalism-wordpress-theme'",
     "theme:validate-zip": "node scripts/validate-theme-zip.mjs",
+    "release:check-version": "node scripts/validate-release-version.mjs",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",
     "wp:destroy": "wp-env destroy",

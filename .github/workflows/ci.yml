@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate theme
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Configure GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.EUMILITAR_PACKAGES_TOKEN }}
+        run: |
+          {
+            echo "@carvalhorafael:registry=https://npm.pkg.github.com"
+            echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}"
+          } > .npmrc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start WordPress
+        run: npm run wp:start
+
+      - name: Validate release package
+        run: npm run validate
+
+      - name: Upload theme ZIP
+        uses: actions/upload-artifact@v5
+        with:
+          name: eumilitar-neo-brutalism-wordpress-theme
+          path: dist/eumilitar-neo-brutalism-wordpress-theme.zip
+          if-no-files-found: error
+
+      - name: Stop WordPress
+        if: always()
+        continue-on-error: true
+        run: npm run wp:stop

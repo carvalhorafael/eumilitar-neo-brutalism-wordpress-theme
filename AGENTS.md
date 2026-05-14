@@ -77,6 +77,60 @@ git branch -vv
 
 Se o checkout estiver em `main`, criar uma branch antes de editar. Commits diretos em `main` só devem acontecer em situações explicitamente autorizadas pelo usuário ou em bootstrap inicial de repositório vazio.
 
+## Pull Requests e CI
+
+Todo PR para `main` deve passar pelo workflow `CI`.
+
+Rotina padrão:
+
+1. criar branch de trabalho com prefixo `codex/`;
+2. fazer commits pequenos e intencionais;
+3. rodar validações locais quando a mudança tocar build, PHP, assets ou empacotamento;
+4. fazer push da branch;
+5. abrir PR para `main`;
+6. aguardar o workflow `CI` passar antes do merge.
+
+O workflow de CI roda em PRs para `main`, em pushes para `main` e manualmente via `workflow_dispatch`. Ele executa:
+
+- `npm ci`;
+- `npm run wp:start`;
+- `npm run validate`;
+- upload do ZIP gerado em `dist/eumilitar-neo-brutalism-wordpress-theme.zip` como artifact.
+
+O repositório precisa do secret `EUMILITAR_PACKAGES_TOKEN` para instalar os pacotes privados/publicados do escopo `@carvalhorafael` no GitHub Packages. Esse token deve ter permissão mínima de leitura dos packages necessários. Nunca commitar `.npmrc` real ou tokens.
+
+## Releases e tags
+
+A decisão de criar uma nova release é humana. A automação começa quando uma tag `vX.Y.Z` é enviada ao GitHub.
+
+Rotina padrão de release:
+
+1. criar uma branch de release;
+2. atualizar a versão em `package.json`;
+3. atualizar `Version` em `style.css`;
+4. atualizar `Stable tag` em `readme.txt`;
+5. abrir PR e mergear em `main` após o CI passar;
+6. sincronizar `main` local;
+7. criar tag anotada no formato `vX.Y.Z`;
+8. fazer push da tag.
+
+Exemplo:
+
+```bash
+git checkout main
+git pull --ff-only origin main
+git tag -a v0.1.1 -m "Release v0.1.1"
+git push origin v0.1.1
+```
+
+O workflow `Release` roda em tags `v*`. Ele valida que a tag `vX.Y.Z` bate com:
+
+- `package.json` -> `version`;
+- `style.css` -> `Version`;
+- `readme.txt` -> `Stable tag`.
+
+Depois disso, executa `npm run validate`, cria a GitHub Release e anexa o ZIP público do tema. Não criar releases manualmente sem tag correspondente.
+
 ## Validações úteis
 
 Antes de considerar uma mudança pronta:
