@@ -145,7 +145,7 @@ Tarefas:
   - Group/Button ou HTML simples para CTA compacto.
 - [x] Garantir cleanup/isolamento nos testes E2E para nao depender de estado manual do admin.
 - [x] Adicionar smoke E2E para sidebar em desktop.
-- [ ] Adicionar smoke E2E para empilhamento mobile.
+- [x] Adicionar smoke E2E para empilhamento mobile.
 - [ ] Rodar axe na pagina de blog com sidebar ativa.
 
 Critérios de aceite:
@@ -174,7 +174,7 @@ Tarefas:
 - [x] Renderizar `after-post-content` apos o conteudo do artigo e antes de comentarios.
 - [x] Manter comentarios funcionando como hoje.
 - [x] Criar estilo de faixa/bloco horizontal para widgets nessa area.
-- [ ] Garantir que um pattern/CTA com classes `ds-*` funcione bem nessa posicao.
+- [x] Garantir que um pattern/CTA com classes `ds-*` funcione bem nessa posicao.
 - [x] Adicionar smoke E2E para artigo com area apos conteudo ativa.
 
 Critérios de aceite:
