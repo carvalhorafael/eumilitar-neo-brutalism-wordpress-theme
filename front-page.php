@@ -7,9 +7,9 @@
 
 get_header();
 
-$posts_page_id = (int) get_option( 'page_for_posts' );
-$blog_url      = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/' );
-$latest_posts  = get_posts(
+$posts_page_id   = (int) get_option( 'page_for_posts' );
+$blog_url        = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/' );
+$latest_posts    = get_posts(
 	array(
 		'numberposts' => 1,
 		'post_status' => 'publish',

@@ -15,7 +15,7 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Necessidade: card editorial para listagem de posts com thumbnail, metadados, título, excerpt e CTA.
 - O que existe hoje no DS: primitive `.ds-card`, `.ds-button` e `.ds-badge`.
 - Limite encontrado: `.ds-card` é apenas um primitive estrutural; não há componente/pattern editorial de artigo ou post teaser.
-- Decisão temporária no tema: compor o card com `.ds-card`, `.ds-button`, `.ds-badge` e classes locais `post-card*`.
+- Decisão temporária no tema: compor o card com `.ds-card`, `.ds-button`, `.ds-badge` e classes locais `post-card*`, incluindo placeholder local quando não houver imagem destacada.
 
 ### Metadados editoriais de post
 
@@ -52,3 +52,14 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - O que existe hoje no DS: `.ds-pagination` para paginação numérica.
 - Limite encontrado: não há componente específico para previous/next editorial com título do post.
 - Decisão temporária no tema: usar `previous_post_link()` e `next_post_link()` com classes locais `post-navigation*`.
+
+### Prose/rich text editorial
+
+- Status: gap identificado
+- Locais de uso:
+  - `template-parts/content-single.php`
+  - `src/styles/theme.css`
+- Necessidade: estilos consistentes para conteúdo longo vindo do Gutenberg, incluindo headings, listas, blockquotes, imagens, legendas e espaçamento vertical.
+- O que existe hoje no DS: tokens, primitives e patterns de landing/captura/prova social.
+- Limite encontrado: não há componente/pattern de prose para corpo editorial de artigo.
+- Decisão temporária no tema: estilizar `.single-post-entry__content` localmente usando tokens do DS.

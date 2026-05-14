@@ -32,6 +32,8 @@
 		);
 		?>
 	</div>
+
+	<?php eumilitar_render_post_taxonomy(); ?>
 </article>
 
 <nav class="post-navigation" aria-label="<?php esc_attr_e( 'Navegação entre artigos', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">

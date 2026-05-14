@@ -139,6 +139,39 @@ function eumilitar_render_post_meta( $post_id = null ) {
 }
 
 /**
+ * Render category and tag links for the single post footer.
+ *
+ * @param int|null $post_id Post ID.
+ * @return void
+ */
+function eumilitar_render_post_taxonomy( $post_id = null ) {
+	$post_id    = $post_id ? $post_id : get_the_ID();
+	$categories = get_the_category_list( esc_html_x( ', ', 'category list separator', 'eumilitar-neo-brutalism-wordpress-theme' ), '', $post_id );
+	$tags       = get_the_tag_list( '', esc_html_x( ', ', 'tag list separator', 'eumilitar-neo-brutalism-wordpress-theme' ), '', $post_id );
+
+	if ( ! $categories && ! $tags ) {
+		return;
+	}
+	?>
+	<footer class="entry-taxonomy" aria-label="<?php esc_attr_e( 'Tópicos do artigo', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>">
+		<?php if ( $categories ) : ?>
+			<div class="entry-taxonomy__group">
+				<span class="entry-taxonomy__label"><?php esc_html_e( 'Categorias', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+				<span class="entry-taxonomy__links"><?php echo wp_kses_post( $categories ); ?></span>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( $tags ) : ?>
+			<div class="entry-taxonomy__group">
+				<span class="entry-taxonomy__label"><?php esc_html_e( 'Tags', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+				<span class="entry-taxonomy__links"><?php echo wp_kses_post( $tags ); ?></span>
+			</div>
+		<?php endif; ?>
+	</footer>
+	<?php
+}
+
+/**
  * Render posts pagination using the design-system pagination primitive.
  *
  * @return void

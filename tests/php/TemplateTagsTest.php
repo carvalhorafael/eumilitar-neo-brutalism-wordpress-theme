@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
  * @covers ::eumilitar_render_action
  * @covers ::eumilitar_render_badge
  * @covers ::eumilitar_render_post_meta
+ * @covers ::eumilitar_render_post_taxonomy
  * @covers ::eumilitar_post_uses_design_system_patterns
  */
 final class TemplateTagsTest extends TestCase {
@@ -108,5 +109,55 @@ final class TemplateTagsTest extends TestCase {
 
 		wp_delete_post( $post_id, true );
 		wp_delete_term( $category_id, 'category' );
+	}
+
+	/**
+	 * Post taxonomy should expose category and tag links.
+	 */
+	public function test_post_taxonomy_renders_categories_and_tags(): void {
+		$category = wp_insert_term(
+			'Carreira militar',
+			'category',
+			array(
+				'slug' => 'carreira-militar-taxonomy-test',
+			)
+		);
+		$tag      = wp_insert_term(
+			'Edital taxonomy test',
+			'post_tag',
+			array(
+				'slug' => 'edital-taxonomy-test',
+			)
+		);
+
+		$this->assertIsArray( $category );
+		$this->assertIsArray( $tag );
+
+		$post_id = wp_insert_post(
+			array(
+				'post_title'    => 'Artigo com taxonomia',
+				'post_status'   => 'publish',
+				'post_content'  => 'Conteúdo do artigo.',
+				'post_category' => array( (int) $category['term_id'] ),
+				'tags_input'    => array( 'Edital taxonomy test' ),
+			),
+			true
+		);
+
+		$this->assertIsInt( $post_id );
+
+		ob_start();
+		eumilitar_render_post_taxonomy( $post_id );
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'entry-taxonomy', $output );
+		$this->assertStringContainsString( 'Categorias', $output );
+		$this->assertStringContainsString( 'Tags', $output );
+		$this->assertStringContainsString( 'Carreira militar', $output );
+		$this->assertStringContainsString( 'Edital taxonomy test', $output );
+
+		wp_delete_post( $post_id, true );
+		wp_delete_term( (int) $category['term_id'], 'category' );
+		wp_delete_term( (int) $tag['term_id'], 'post_tag' );
 	}
 }

@@ -12,6 +12,15 @@
 		<a class="post-card__media" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
 			<?php the_post_thumbnail( 'large', array( 'class' => 'post-card__image' ) ); ?>
 		</a>
+	<?php else : ?>
+		<a
+			class="post-card__media post-card__media--placeholder"
+			href="<?php the_permalink(); ?>"
+			aria-label="<?php echo esc_attr( sprintf( /* translators: %s: post title. */ __( 'Abrir artigo: %s', 'eumilitar-neo-brutalism-wordpress-theme' ), the_title_attribute( array( 'echo' => false ) ) ) ); ?>"
+		>
+			<span class="post-card__placeholder-kicker"><?php esc_html_e( 'EuMilitar', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+			<span class="post-card__placeholder-title"><?php esc_html_e( 'Artigo', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></span>
+		</a>
 	<?php endif; ?>
 
 	<div class="post-card__body">

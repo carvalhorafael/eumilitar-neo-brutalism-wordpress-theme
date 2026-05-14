@@ -164,7 +164,8 @@ test.describe("EuMilitar blog templates", () => {
 
     await expect(page.locator(".blog-header__title")).toHaveText("Artigos");
     await expect(page.locator(".post-card")).toHaveCount(2);
-    await expect(page.getByRole("link", { name: "Como organizar a rotina de estudos" })).toBeVisible();
+    await expect(page.locator(".post-card__media--placeholder")).toHaveCount(2);
+    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos" })).toBeVisible();
     await expect(page.locator(".entry-meta").first()).toBeVisible();
   });
 
@@ -176,6 +177,7 @@ test.describe("EuMilitar blog templates", () => {
       "Um roteiro prático para organizar a semana de estudos.",
     );
     await expect(page.locator(".entry-meta")).toBeVisible();
+    await expect(page.locator(".entry-taxonomy")).toBeVisible();
     await expect(page.locator(".post-navigation")).toBeVisible();
   });
 });
