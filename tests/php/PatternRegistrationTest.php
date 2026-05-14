@@ -37,6 +37,9 @@ final class PatternRegistrationTest extends TestCase {
 			'eumilitar/faq',
 			'eumilitar/cta',
 			'eumilitar/landing-page',
+			'eumilitar/sidebar-blog',
+			'eumilitar/after-post-cta',
+			'eumilitar/capture-compact',
 		);
 
 		foreach ( $patterns as $pattern ) {

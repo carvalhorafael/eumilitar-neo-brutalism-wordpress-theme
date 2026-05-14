@@ -23,6 +23,71 @@ const setWpOption = (name, value) => {
   }
 };
 
+const expectNoAxeViolations = async (page) => {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+
+  expect(results.violations).toEqual([]);
+};
+
+const cleanupE2eWidgets = () => {
+  runWpCli([
+    "eval",
+    `
+    $widget_ids = array('block-901', 'block-902', 'block-903', 'block-904', 'block-905', 'block-906');
+    $sidebars = wp_get_sidebars_widgets();
+    foreach ($sidebars as $sidebar_id => $widgets) {
+      if (! is_array($widgets)) {
+        continue;
+      }
+      $sidebars[$sidebar_id] = array_values(array_diff($widgets, $widget_ids));
+    }
+    wp_set_sidebars_widgets($sidebars);
+
+    $widget_blocks = get_option('widget_block', array());
+    foreach (array(901, 902, 903, 904, 905, 906) as $id) {
+      unset($widget_blocks[$id]);
+    }
+    update_option('widget_block', $widget_blocks);
+    `,
+  ]);
+};
+
+const seedBlogSidebarWidgets = () => {
+  runWpCli([
+    "eval",
+    `
+    $widget_blocks = get_option('widget_block', array());
+    $widget_blocks[901] = array(
+      'content' => '<!-- wp:search {"label":"Buscar no blog","buttonText":"Buscar"} /-->',
+    );
+    $widget_blocks[902] = array(
+      'content' => '<!-- wp:latest-posts {"postsToShow":3,"displayPostDate":true} /-->',
+    );
+    $widget_blocks[903] = array(
+      'content' => '<!-- wp:categories /-->',
+    );
+    $widget_blocks[904] = array(
+      'content' => '<!-- wp:tag-cloud {"taxonomy":"post_tag"} /-->',
+    );
+    $widget_blocks[905] = array(
+      'content' => '<!-- wp:group {"className":"widget-cta"} --><div class="wp-block-group widget-cta"><!-- wp:paragraph {"className":"ds-badge ds-badge--brand"} --><p class="ds-badge ds-badge--brand">Preparação EuMilitar</p><!-- /wp:paragraph --><!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Continue sua preparação</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Avance para uma trilha organizada por edital.</p><!-- /wp:paragraph --></div><!-- /wp:group -->',
+    );
+    $widget_blocks[906] = array(
+      'content' => '<!-- wp:paragraph --><p>Rodapé editorial E2E</p><!-- /wp:paragraph --><!-- wp:categories /-->',
+    );
+    update_option('widget_block', $widget_blocks);
+
+    $sidebars = wp_get_sidebars_widgets();
+    $sidebars['blog-sidebar'] = array('block-901', 'block-902', 'block-903', 'block-904');
+    $sidebars['after-post-content'] = array('block-905');
+    $sidebars['site-footer'] = array('block-906');
+    wp_set_sidebars_widgets($sidebars);
+    `,
+  ]);
+};
+
 const cleanupE2eContent = () => {
   runWpCli([
     "eval",
@@ -110,11 +175,7 @@ test.describe("EuMilitar theme front end", () => {
   test("has no automatically detectable WCAG A/AA violations on the landing page", async ({ page }) => {
     await page.goto("/");
 
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-      .analyze();
-
-    expect(results.violations).toEqual([]);
+    await expectNoAxeViolations(page);
   });
 });
 
@@ -130,6 +191,7 @@ test.describe("EuMilitar blog templates", () => {
   let originalPageOnFront;
   let originalPostsPerPage;
   let originalShowOnFront;
+  let standardPageUrl;
   let tagUrl;
 
   test.beforeAll(({}, testInfo) => {
@@ -142,6 +204,7 @@ test.describe("EuMilitar blog templates", () => {
     originalPageForPosts = tryRunWpCli(["option", "get", "page_for_posts"]) || "0";
     originalPostsPerPage = tryRunWpCli(["option", "get", "posts_per_page"]) || "10";
     cleanupE2eContent();
+    cleanupE2eWidgets();
 
     blogPageId = runWpCli([
       "post",
@@ -163,12 +226,23 @@ test.describe("EuMilitar blog templates", () => {
       "--post_content=Página inicial temporária para testes.",
       "--porcelain",
     ]);
+    const standardPageId = runWpCli([
+      "post",
+      "create",
+      "--post_type=page",
+      "--post_status=publish",
+      "--post_title=Página comum E2E",
+      "--post_name=e2e-blog-pagina-comum",
+      "--post_content=Conteúdo de página comum para validar o template page.php.",
+      "--porcelain",
+    ]);
 
     setWpOption("show_on_front", "page");
     setWpOption("page_on_front", frontPageId);
     setWpOption("page_for_posts", blogPageId);
     setWpOption("posts_per_page", "2");
     blogPageUrl = runWpCli(["eval", `echo add_query_arg('page_id', ${blogPageId}, home_url('/'));`]);
+    standardPageUrl = runWpCli(["eval", `echo add_query_arg('page_id', ${standardPageId}, home_url('/'));`]);
     firstPostId = runWpCli([
       "post",
       "create",
@@ -195,6 +269,7 @@ test.describe("EuMilitar blog templates", () => {
     runWpCli(["post", "term", "add", firstPostId, "post_tag", "edital-e2e"]);
     categoryUrl = runWpCli(["eval", "echo get_term_link('rotina-e2e', 'category');"]);
     tagUrl = runWpCli(["eval", "echo get_term_link('edital-e2e', 'post_tag');"]);
+    seedBlogSidebarWidgets();
     runWpCli([
       "post",
       "create",
@@ -224,6 +299,7 @@ test.describe("EuMilitar blog templates", () => {
     setWpOption("page_on_front", originalPageOnFront || "0");
     setWpOption("page_for_posts", originalPageForPosts || "0");
     setWpOption("posts_per_page", originalPostsPerPage || "10");
+    cleanupE2eWidgets();
     cleanupE2eContent();
   });
 
@@ -231,10 +307,38 @@ test.describe("EuMilitar blog templates", () => {
     await page.goto(blogPageUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Artigos E2E");
+    await expect(page.locator(".content-sidebar-layout")).toBeVisible();
+    await expect(page.locator(".widget-area--blog")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-search")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-latest-posts")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-categories")).toBeVisible();
+    await expect(page.locator(".widget-area--blog .wp-block-tag-cloud")).toBeVisible();
     expect(await page.locator(".post-card").count()).toBeGreaterThanOrEqual(2);
     expect(await page.locator(".post-card__media--placeholder").count()).toBeGreaterThanOrEqual(2);
     await expect(page.locator(".post-card__title").first()).toBeVisible();
     await expect(page.locator(".entry-meta").first()).toBeVisible();
+  });
+
+  test("stacks the blog sidebar below posts on narrow viewports", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(blogPageUrl);
+
+    const mainBox = await page.locator(".content-sidebar-layout__main").boundingBox();
+    const sidebarBox = await page.locator(".content-sidebar-layout__sidebar").boundingBox();
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    const viewportWidth = await page.evaluate(() => window.innerWidth);
+
+    expect(mainBox).not.toBeNull();
+    expect(sidebarBox).not.toBeNull();
+    expect(sidebarBox.y).toBeGreaterThanOrEqual(mainBox.y + mainBox.height - 1);
+    expect(scrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
+    await expect(page.locator(".widget-area--blog")).toBeVisible();
+  });
+
+  test("has no automatically detectable WCAG A/AA violations on the blog index with sidebar", async ({ page }) => {
+    await page.goto(blogPageUrl);
+
+    await expectNoAxeViolations(page);
   });
 
   test("paginates the blog post index", async ({ page }) => {
@@ -261,6 +365,27 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
   });
 
+  test("renders a standard page through the page template", async ({ page }) => {
+    await page.goto(standardPageUrl);
+
+    await expect(page.locator(".site-main--page")).toBeVisible();
+    await expect(page.locator(".site-entry__title")).toHaveText("Página comum E2E");
+    await expect(page.locator(".site-entry__content")).toContainText(
+      "Conteúdo de página comum para validar o template page.php.",
+    );
+  });
+
+  test("renders the editable footer widget area when active", async ({ page }) => {
+    await page.goto(blogPageUrl);
+
+    const footerWidgetArea = page.locator(".site-footer .widget-area--footer");
+
+    await expect(footerWidgetArea).toBeVisible();
+    await expect(footerWidgetArea).toContainText("Rodapé editorial E2E");
+    await expect(footerWidgetArea.locator(".wp-block-categories")).toBeVisible();
+    await expect(page.locator(".site-footer__text")).toBeVisible();
+  });
+
   test("renders a single blog post with post navigation", async ({ page }) => {
     await page.goto(`/?p=${firstPostId}`);
 
@@ -271,27 +396,45 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.locator(".entry-meta")).toBeVisible();
     await expect(page.locator(".entry-taxonomy")).toBeVisible();
     await expect(page.locator(".post-navigation")).toBeVisible();
+    await expect(page.locator(".widget-area--after-post")).toBeVisible();
+    await expect(page.locator(".widget-area--after-post")).toContainText("Continue sua preparação");
     await expect(page.locator(".comments-area")).toBeVisible();
     await expect(page.locator(".comment-list")).toContainText("Esse roteiro ajudou a organizar a revisão.");
     await expect(page.locator(".comment-reply-title")).toContainText("Deixe um comentário");
     await expect(page.locator("#comment")).toBeVisible();
   });
 
+  test("has no automatically detectable WCAG A/AA violations on a single post with comments", async ({ page }) => {
+    await page.goto(`/?p=${firstPostId}`);
+
+    await expectNoAxeViolations(page);
+  });
+
   test("renders category, tag and search editorial templates", async ({ page }) => {
     await page.goto(categoryUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Rotina E2E");
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+    await expect(
+      page.locator(".content-sidebar-layout__main").getByRole("link", {
+        exact: true,
+        name: "Como organizar a rotina de estudos E2E",
+      }),
+    ).toBeVisible();
 
     await page.goto(tagUrl);
 
     await expect(page.locator(".blog-header__title")).toHaveText("Edital E2E");
-    await expect(page.getByRole("link", { exact: true, name: "Como organizar a rotina de estudos E2E" })).toBeVisible();
+    await expect(
+      page.locator(".content-sidebar-layout__main").getByRole("link", {
+        exact: true,
+        name: "Como organizar a rotina de estudos E2E",
+      }),
+    ).toBeVisible();
 
     await page.goto("/?s=E2E");
 
     await expect(page.locator(".blog-header__title")).toContainText("Resultados para E2E");
-    await expect(page.locator('form[role="search"]')).toBeVisible();
+    await expect(page.locator('.blog-header form[role="search"]')).toBeVisible();
 
     await page.goto("/?s=resultado-inexistente-e2e");
 
@@ -300,11 +443,23 @@ test.describe("EuMilitar blog templates", () => {
     await expect(page.getByRole("link", { name: "Ver todos os artigos" })).toHaveAttribute("href", blogPageUrl);
   });
 
+  test("has no automatically detectable WCAG A/AA violations on empty search results", async ({ page }) => {
+    await page.goto("/?s=resultado-inexistente-e2e");
+
+    await expectNoAxeViolations(page);
+  });
+
   test("renders the 404 template with search and blog return", async ({ page }) => {
     await page.goto("/?p=999999999");
 
     await expect(page.locator(".error-page__title")).toHaveText("Página não encontrada");
     await expect(page.locator('form[role="search"]')).toBeVisible();
     await expect(page.getByRole("link", { name: "Ver artigos" })).toBeVisible();
+  });
+
+  test("has no automatically detectable WCAG A/AA violations on the 404 template", async ({ page }) => {
+    await page.goto("/?p=999999999");
+
+    await expectNoAxeViolations(page);
   });
 });

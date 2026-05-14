@@ -153,3 +153,79 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - O que existe hoje no DS: primitives de card, button, badge e inputs.
 - Limite encontrado: não há componente/pattern para comments thread nem adapter para `wp_list_comments()` e `comment_form()`.
 - Decisão temporária no tema: implementar `comments.php` com funções nativas do WordPress e estilizar classes padrão de comentários com tokens/primitives do DS.
+
+## Widgets e areas editaveis
+
+### Sidebar editorial / area de widgets
+
+- Status: gap identificado
+- Locais de uso previstos:
+  - `inc/widgets.php`
+  - `home.php`
+  - `archive.php`
+  - `category.php`
+  - `tag.php`
+  - `search.php`
+  - `single.php`
+  - `footer.php`
+  - `src/styles/theme.css`
+- Necessidade: padrao visual para areas editaveis do WordPress, incluindo sidebar de blog, sidebar de artigo, area apos artigo e rodape.
+- O que existe hoje no DS: primitives como `.ds-card`, `.ds-button`, `.ds-badge`, inputs, lista/divider e patterns de secoes maiores.
+- Limite encontrado: nao ha componente/pattern especifico para sidebar editorial ou wrapper de widget WordPress.
+- Decisão temporária no tema: registrar areas com APIs nativas do WordPress, criar adapters locais `.widget-area`, `.widget` e `.widget__title`, e oferecer o pattern `eumilitar/sidebar-blog` como composicao inicial.
+- Encaminhamento para o Design System: avaliar um pattern oficial de sidebar editorial com wrapper, ritmo vertical, titulos, lista editorial, busca e taxonomias. Hoje o tema precisa coordenar isso localmente porque o DS cobre secoes de pagina, mas nao areas editaveis estreitas do WordPress.
+
+### Lista compacta de posts para widgets
+
+- Status: gap identificado
+- Locais de uso previstos:
+  - `blog-sidebar`
+  - `single-post-sidebar`
+  - `src/styles/theme.css`
+- Necessidade: lista compacta de artigos recentes/relacionados adequada para coluna estreita, com titulo, data e link.
+- O que existe hoje no DS: card editorial local para listagens e primitives `.ds-card`, `.ds-badge` e `.ds-button`.
+- Limite encontrado: nao ha componente/pattern de lista compacta editorial para sidebar.
+- Decisão temporária no tema: usar inicialmente o bloco nativo Latest Posts estilizado como adapter local e incluído em `eumilitar/sidebar-blog`; se o contrato visual precisar de thumbnail/metadados especificos, criar template local e registrar a evolucao.
+- Encaminhamento para o Design System: definir uma lista compacta editorial oficial para areas estreitas, separada dos cards de listagem principais.
+
+### Lista de categorias, tags e topicos
+
+- Status: gap identificado
+- Locais de uso previstos:
+  - `blog-sidebar`
+  - `single-post-sidebar`
+  - `site-footer`
+  - `src/styles/theme.css`
+- Necessidade: exibicao coerente de categorias, tags e topicos editoriais como links escaneaveis em areas estreitas.
+- O que existe hoje no DS: `.ds-badge`, list/divider e primitives textuais.
+- Limite encontrado: nao ha componente editorial de taxonomy/link cloud para WordPress.
+- Decisão temporária no tema: estilizar blocos nativos Categories e Tag Cloud com tokens do DS e usa-los no pattern `eumilitar/sidebar-blog`.
+- Encaminhamento para o Design System: avaliar componente de links/taxonomias para categorias, tags e topicos editoriais, com variantes de lista e nuvem.
+
+### CTA compacto para sidebar
+
+- Status: gap identificado
+- Locais de uso previstos:
+  - `blog-sidebar`
+  - `single-post-sidebar`
+  - `after-post-content`
+  - `src/styles/theme.css`
+- Necessidade: chamada curta de conversao em area estreita sem usar uma secao de landing completa.
+- O que existe hoje no DS: pattern `cta` com variantes `light`, `brand-dark` e `urgent`.
+- Limite encontrado: o `cta` atual e orientado a secao/faixa, nao a card compacto de sidebar.
+- Decisão temporária no tema: compor CTA compacto com `.ds-badge`, `.ds-button` e adapters locais em `eumilitar/sidebar-blog`; para area horizontal, usar `ds-cta` no pattern `eumilitar/after-post-cta`.
+- Encaminhamento para o Design System: criar variante compacta oficial de CTA para sidebar/widget, sem depender de uma faixa completa de landing page.
+
+### Captura compacta para sidebar
+
+- Status: gap identificado
+- Locais de uso previstos:
+  - `blog-sidebar`
+  - `single-post-sidebar`
+  - `after-post-content`
+  - `src/styles/theme.css`
+- Necessidade: formulario curto de captura em coluna estreita.
+- O que existe hoje no DS: pattern `capture` e primitives de input/button.
+- Limite encontrado: o pattern `capture` atual e mais adequado a secoes de pagina; falta variante compacta para widget/sidebar.
+- Decisão temporária no tema: oferecer `eumilitar/capture-compact` com `.ds-card`, `.ds-badge`, inputs e `.ds-button`, aplicando classes locais apenas para grid/espacamento estreito.
+- Encaminhamento para o Design System: criar variante oficial de captura compacta com anatomia, campos minimos, estados e recomendacao de uso em sidebar.

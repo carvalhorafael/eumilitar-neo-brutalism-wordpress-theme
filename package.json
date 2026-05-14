@@ -11,7 +11,7 @@
     "lint:php:fix": "npx wp-env run cli bash -lc 'cd /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme && vendor/bin/phpcbf'",
     "lint:php:syntax": "npx wp-env run cli bash -lc 'cd /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme && find . \\( -path \"./dist\" -o -path \"./vendor\" \\) -prune -o -name \"*.php\" -print0 | xargs -0 -n1 php -l'",
     "seed:blog": "npx wp-env run cli wp eval-file /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/scripts/seed-blog-content.php",
-    "theme:check": "npx wp-env run cli wp eval-file /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/scripts/run-theme-check.php",
+    "theme:check": "rm -rf dist && npx wp-env run cli wp eval-file /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/scripts/run-theme-check.php",
     "theme:test-install": "npx wp-env run tests-cli bash -lc 'rm -rf /tmp/eumilitar-wp-clean && mkdir -p /tmp/eumilitar-wp-clean && tar -C /var/www/html --exclude=\"./wp-content/themes/eumilitar-neo-brutalism-wordpress-theme\" -cf - . | tar -C /tmp/eumilitar-wp-clean -xf - && wp --path=/tmp/eumilitar-wp-clean theme install /var/www/html/wp-content/themes/eumilitar-neo-brutalism-wordpress-theme/dist/eumilitar-neo-brutalism-wordpress-theme.zip --force --activate && wp --path=/tmp/eumilitar-wp-clean theme status eumilitar-neo-brutalism-wordpress-theme'",
     "theme:validate-zip": "node scripts/validate-theme-zip.mjs",
     "release:check-version": "node scripts/validate-release-version.mjs",

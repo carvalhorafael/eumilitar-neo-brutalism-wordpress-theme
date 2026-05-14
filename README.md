@@ -95,3 +95,5 @@ Os patterns do tema ficam disponíveis na categoria `EuMilitar` do editor de blo
 Notas de uso e validação estão em `docs/editor-elementor.md`.
 
 Decisões de escopo do tema ficam em `docs/theme-decisions.md`.
+
+A frente de widgets e áreas editáveis está mapeada em `docs/widget-strategy.md`, com plano de implementação em `docs/widget-implementation-plan.md`.

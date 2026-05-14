@@ -35,7 +35,20 @@ test.describe("EuMilitar theme editor contracts", () => {
         "eumilitar/hero",
         "eumilitar/faq",
         "eumilitar/landing-page",
+        "eumilitar/sidebar-blog",
+        "eumilitar/after-post-cta",
+        "eumilitar/capture-compact",
       ])
     );
+  });
+
+  test("opens the widgets editor without deprecated script notices", async ({ page }) => {
+    test.skip(test.info().project.name !== "chromium", "Widgets editor smoke runs only on desktop.");
+
+    await loginAsAdmin(page);
+    await page.goto("/wp-admin/widgets.php");
+
+    await expect(page.locator("body")).not.toContainText("wp_enqueue_script()");
+    await expect(page.locator("body")).not.toContainText("wp-editor");
   });
 });

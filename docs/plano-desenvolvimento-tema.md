@@ -577,6 +577,41 @@ Implementação:
 - `npm run theme:test-install` instala o ZIP em uma cópia limpa da instância de testes;
 - `npm run validate` concentra o fluxo de release local.
 
+## Fase 7 - Widgets e areas editoriais editaveis
+
+Objetivo: permitir que blog, artigos e rodape tenham areas editaveis pelo WordPress sem transformar o tema em uma biblioteca paralela de widgets.
+
+Documento de referencia:
+
+- `docs/widget-strategy.md`
+- `docs/widget-implementation-plan.md`
+
+Tarefas:
+
+- [x] Criar `inc/widgets.php`.
+- [x] Registrar `blog-sidebar`.
+- [ ] Avaliar/registrar `single-post-sidebar` se a leitura do artigo justificar uma sidebar permanente.
+- [x] Registrar `after-post-content`.
+- [x] Registrar `site-footer`.
+- [ ] Avaliar necessidade real de `front-page-aside`.
+- [x] Renderizar sidebar nas listagens editoriais.
+- [x] Renderizar area apos artigo antes dos comentarios.
+- [x] Renderizar area opcional no rodape.
+- [x] Criar styles para `.widget-area`, `.widget`, `.widget__title` e blocos nativos usados em widgets.
+- [x] Criar patterns de composicao para sidebar/apos artigo quando fizer sentido.
+- [x] Atualizar `docs/design-system-gaps.md` para todo adapter local sem equivalente no Design System.
+- [x] Adicionar testes PHPUnit para areas registradas.
+- [x] Adicionar smoke E2E desktop para blog com sidebar.
+- [x] Adicionar smoke E2E mobile para blog com sidebar.
+
+Critério de aceite:
+
+- as areas aparecem no admin moderno de Widgets;
+- as areas vazias nao geram markup visual quebrado;
+- blog e artigo continuam responsivos em mobile;
+- widgets nativos de busca, posts recentes, categorias e tags ficam coerentes com o Design System;
+- qualquer componente local usado por falta de equivalente no Design System fica documentado em `docs/design-system-gaps.md`.
+
 ## Rotina de atualização do design system
 
 Quando o design system publicar uma nova versão:
