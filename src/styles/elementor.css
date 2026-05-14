@@ -29,3 +29,284 @@ body.elementor-page .site-entry__header {
 .elementor .ds-cta {
   box-sizing: border-box;
 }
+
+.elementor .em-section-header {
+  display: grid;
+  gap: 0.75rem;
+  margin-inline: auto;
+  max-width: 760px;
+  text-align: center;
+}
+
+.elementor .em-section-header h2,
+.elementor .em-why h2 {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.elementor .em-section-header p,
+.elementor .em-why p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.elementor .em-section-header__eyebrow {
+  color: var(--accent, #1f4d2a);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.elementor .em-courses,
+.elementor .em-approved {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+  margin-inline: auto;
+  max-width: 1120px;
+  padding: clamp(3rem, 6vw, 5rem) 1rem;
+}
+
+.elementor .em-courses__grid {
+  align-items: stretch;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+.elementor .em-course-card {
+  background: var(--paper, #ede4cf);
+  border: 2px solid var(--border-strong, #1a1612);
+  box-shadow: var(--shadow-md, 6px 6px 0 #1a1612);
+  box-sizing: border-box;
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.elementor .em-course-card__discount {
+  justify-self: start;
+}
+
+.elementor .em-course-card__header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.elementor .em-course-card__title {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.elementor .em-course-card__description {
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.elementor .em-course-card__price {
+  border-block: 2px solid var(--border-strong, #1a1612);
+  display: grid;
+  gap: 0.25rem;
+  padding-block: 1rem;
+}
+
+.elementor .em-course-card__old-price {
+  opacity: 0.72;
+  text-decoration: line-through;
+}
+
+.elementor .em-course-card__current-price {
+  color: var(--accent, #1f4d2a);
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.elementor .em-course-card__installments {
+  font-weight: 800;
+}
+
+.elementor .em-course-card__stats {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.elementor .em-course-card__stat {
+  background: var(--surface-base, #ede4cf);
+  border: 2px solid var(--border-strong, #1a1612);
+  display: grid;
+  gap: 0.125rem;
+  padding: 0.625rem;
+}
+
+.elementor .em-course-card__stat strong {
+  font-size: 0.95rem;
+  line-height: 1.1;
+}
+
+.elementor .em-course-card__stat span,
+.elementor .em-course-card__includes h4 {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.elementor .em-course-card__includes {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.elementor .em-course-card__includes h4 {
+  margin: 0;
+}
+
+.elementor .em-course-card__includes ul,
+.elementor .em-checklist {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.elementor .em-course-card__includes li,
+.elementor .em-checklist li {
+  align-items: flex-start;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: auto 1fr;
+  line-height: 1.4;
+}
+
+.elementor .em-course-card__includes li::before,
+.elementor .em-checklist li::before {
+  color: var(--accent, #1f4d2a);
+  content: "✓";
+  font-weight: 900;
+}
+
+.elementor .em-approved__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+.elementor .em-approved--row .em-approved__grid {
+  display: flex;
+  overflow-x: auto;
+  padding-block-end: 0.5rem;
+  scroll-snap-type: x mandatory;
+}
+
+.elementor .em-approved__item {
+  background: var(--paper, #ede4cf);
+  border: 2px solid var(--border-strong, #1a1612);
+  box-shadow: var(--shadow-sm, 3px 3px 0 #1a1612);
+  margin: 0;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+.elementor .em-approved--row .em-approved__item {
+  flex: 0 0 min(70vw, 15rem);
+}
+
+.elementor .em-approved__item img,
+.elementor .em-why__media img {
+  aspect-ratio: 4 / 5;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.elementor .em-why {
+  align-items: center;
+  background: var(--ink, #1a1612);
+  color: var(--text-inverse, #fff);
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.8fr);
+  padding: clamp(3rem, 6vw, 5rem) max(1rem, calc((100vw - 1120px) / 2));
+}
+
+.elementor .em-why__content {
+  display: grid;
+  gap: 1rem;
+}
+
+.elementor .em-why .em-section-header__eyebrow,
+.elementor .em-why .em-checklist li::before {
+  color: var(--paper, #ede4cf);
+}
+
+.elementor .em-why__media {
+  border: 2px solid var(--text-inverse, #fff);
+  box-shadow: 6px 6px 0 var(--text-inverse, #fff);
+  margin: 0;
+  overflow: hidden;
+}
+
+.elementor .em-trust-bar {
+  background: var(--paper, #ede4cf);
+  border-block: 2px solid var(--border-strong, #1a1612);
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+}
+
+.elementor .em-trust-bar__item {
+  align-items: center;
+  border-inline-end: 2px solid var(--border-strong, #1a1612);
+  display: grid;
+  gap: 0.125rem;
+  justify-items: center;
+  min-height: 5rem;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.elementor .em-trust-bar__item:last-child {
+  border-inline-end: 0;
+}
+
+.elementor .em-trust-bar__item strong {
+  color: var(--accent, #1f4d2a);
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.elementor .em-trust-bar__item span {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .elementor .em-course-card__stats,
+  .elementor .em-why {
+    grid-template-columns: 1fr;
+  }
+
+  .elementor .em-trust-bar__item {
+    border-block-end: 2px solid var(--border-strong, #1a1612);
+    border-inline-end: 0;
+  }
+
+  .elementor .em-trust-bar__item:last-child {
+    border-block-end: 0;
+  }
+}

@@ -65,6 +65,40 @@ Smoke page criada em desenvolvimento:
 
 Essa página usa metadados do Elementor e um widget HTML com classes `ds-*`, validando que a base visual do tema também funciona no fluxo Elementor.
 
+## Widgets EuMilitar no Elementor
+
+Plano de trabalho: `docs/elementor-builder-plan.md`.
+
+O tema registra uma categoria `EuMilitar` no Elementor para concentrar widgets controlados pelo Design System.
+
+Fase 1:
+
+- `Hero EuMilitar`;
+- `CTA EuMilitar`;
+- `FAQ EuMilitar`.
+
+Fase 2:
+
+- `Cursos EuMilitar`;
+- `Card de Curso EuMilitar`;
+- `Aprovados EuMilitar`;
+- `Por Que Escolher EuMilitar`;
+- `Barra de Confiança EuMilitar`.
+
+Fase 3:
+
+- `Benefícios EuMilitar`;
+- `Urgência EuMilitar`.
+
+Esses widgets devem ser usados como ponto de partida para homes, landings de cursos e paginas de venda. Eles expõem campos de conteúdo e variantes aprovadas, mas não devem abrir controles livres de cor, tipografia, sombra, raio ou espaçamento.
+
+Regra:
+
+- Elementor monta a página;
+- widgets EuMilitar definem as seções principais;
+- o Design System continua sendo a fonte visual;
+- partials `template-parts/patterns/*` continuam sendo o contrato de markup.
+
 ## CSS Elementor
 
 O arquivo `src/styles/elementor.css` deve conter apenas compatibilidade mínima:
@@ -87,4 +121,3 @@ Regra:
 - Senha: `password`
 
 Essas credenciais são apenas do ambiente local `wp-env`.
-

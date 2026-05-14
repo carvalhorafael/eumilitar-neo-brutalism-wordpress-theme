@@ -154,6 +154,53 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Limite encontrado: não há componente/pattern para comments thread nem adapter para `wp_list_comments()` e `comment_form()`.
 - Decisão temporária no tema: implementar `comments.php` com funções nativas do WordPress e estilizar classes padrão de comentários com tokens/primitives do DS.
 
+## Elementor / Landing pages
+
+### Card comercial de curso
+
+- Status: gap identificado
+- Locais de uso:
+  - `inc/elementor/widgets/class-eumilitar-elementor-course-card-widget.php`
+  - `inc/elementor/widgets/class-eumilitar-elementor-courses-widget.php`
+  - `src/styles/elementor.css`
+- Necessidade: card de oferta para páginas de venda, com desconto, preço, parcelamento, informações do concurso, inclusos e CTA.
+- O que existe hoje no DS: primitives `.ds-card`, `.ds-button`, `.ds-badge` e tokens.
+- Limite encontrado: não há componente específico de oferta/curso com campos comerciais e detalhes de concurso.
+- Decisão temporária no tema: criar adapter local `em-course-card*` usando primitives do DS.
+
+### Prova social visual de aprovados
+
+- Status: gap identificado
+- Locais de uso:
+  - `inc/elementor/widgets/class-eumilitar-elementor-approved-widget.php`
+  - `src/styles/elementor.css`
+- Necessidade: seção de landing para galeria de alunos aprovados, em grade ou faixa horizontal.
+- O que existe hoje no DS: pattern textual de depoimentos e primitives de card.
+- Limite encontrado: não há pattern de galeria/prova social visual com imagens de aprovados.
+- Decisão temporária no tema: criar adapter local `em-approved*` para uso controlado no Elementor.
+
+### Seção institucional com checklist e imagem
+
+- Status: gap identificado
+- Locais de uso:
+  - `inc/elementor/widgets/class-eumilitar-elementor-why-widget.php`
+  - `src/styles/elementor.css`
+- Necessidade: seção comercial/institucional com narrativa, checklist e imagem lateral.
+- O que existe hoje no DS: pattern de benefícios e primitives textuais.
+- Limite encontrado: não há pattern específico para bloco editorial/institucional de venda com imagem lateral.
+- Decisão temporária no tema: criar adapter local `em-why*` e checklist local usando tokens do DS.
+
+### Barra de confiança pré-compra
+
+- Status: gap identificado
+- Locais de uso:
+  - `inc/elementor/widgets/class-eumilitar-elementor-trust-bar-widget.php`
+  - `src/styles/elementor.css`
+- Necessidade: faixa compacta para selos e argumentos como aprovados, avaliação, suporte, pagamento seguro e garantia.
+- O que existe hoje no DS: badges e stats em patterns específicos.
+- Limite encontrado: não há pattern horizontal compacto de trust/proof para páginas de venda.
+- Decisão temporária no tema: criar adapter local `em-trust-bar*` com itens editáveis.
+
 ## Widgets e areas editaveis
 
 ### Sidebar editorial / area de widgets
