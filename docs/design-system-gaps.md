@@ -42,6 +42,33 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - Limite encontrado: não há componente específico para post meta/byline.
 - Decisão temporária no tema: renderizar helper PHP `eumilitar_render_post_meta()` com classes locais `entry-meta*`.
 
+### Cabeçalho editorial de arquivo
+
+- Status: gap identificado
+- Locais de uso:
+  - `home.php`
+  - `archive.php`
+  - `category.php`
+  - `tag.php`
+  - `search.php`
+  - `src/styles/theme.css`
+- Necessidade: cabeçalho padrão para páginas editoriais, com badge/contexto, título e descrição opcional.
+- O que existe hoje no DS: `.ds-badge` e patterns de seções de landing, mas não um header editorial genérico para arquivos WordPress.
+- Limite encontrado: não há componente/pattern para archive header, search header ou taxonomy header.
+- Decisão temporária no tema: criar estrutura local `blog-header*` usando `.ds-badge` como primitive.
+
+### Taxonomia editorial de artigo
+
+- Status: gap identificado
+- Locais de uso:
+  - `inc/template-tags.php`
+  - `template-parts/content-single.php`
+  - `src/styles/theme.css`
+- Necessidade: bloco de categorias e tags no rodapé do artigo completo.
+- O que existe hoje no DS: primitives textuais e `.ds-badge`, mas não um componente de taxonomia editorial.
+- Limite encontrado: não há pattern para topic/taxonomy footer de artigo.
+- Decisão temporária no tema: renderizar helper PHP `eumilitar_render_post_taxonomy()` com classes locais `entry-taxonomy*`.
+
 ### Template de artigo completo
 
 - Status: gap identificado
@@ -103,6 +130,17 @@ O objetivo é manter rastreabilidade: primeiro o tema usa uma composição local
 - O que existe hoje no DS: primitives de badge, button e input.
 - Limite encontrado: não há componente/pattern de empty state editorial ou adapter para arquivos nativos do WordPress.
 - Decisão temporária no tema: criar helper PHP `eumilitar_render_editorial_empty_state()` e classes locais `site-empty*`.
+
+### Estado 404 editorial
+
+- Status: gap identificado
+- Locais de uso:
+  - `404.php`
+  - `src/styles/theme.css`
+- Necessidade: página de erro editorial com badge, título, descrição, busca e CTA para voltar aos artigos.
+- O que existe hoje no DS: primitives de badge, button e input.
+- Limite encontrado: não há pattern específico para página 404/erro no Design System.
+- Decisão temporária no tema: criar estrutura local `error-page*` e reutilizar o formulário nativo de busca estilizado.
 
 ### Comentários de artigo
 
