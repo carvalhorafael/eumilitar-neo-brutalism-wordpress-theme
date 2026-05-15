@@ -6,6 +6,13 @@
  */
 
 get_header();
+
+$free_material_categories = get_terms(
+	array(
+		'hide_empty' => true,
+		'taxonomy'   => EUMILITAR_FREE_MATERIAL_TAXONOMY,
+	)
+);
 ?>
 
 <main id="primary" class="site-main site-main--free-materials">
@@ -16,13 +23,55 @@ get_header();
 	</header>
 
 	<?php if ( have_posts() ) : ?>
-		<div class="free-material-grid">
-			<?php
-			while ( have_posts() ) :
-				the_post();
-				get_template_part( 'template-parts/content', 'free-material-card' );
-			endwhile;
-			?>
+		<div class="free-materials-layout" data-free-material-filters>
+			<aside class="free-material-filters" aria-labelledby="free-material-filters-title">
+				<h2 id="free-material-filters-title" class="free-material-filters__title"><?php esc_html_e( 'Filtros', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></h2>
+
+				<?php if ( ! is_wp_error( $free_material_categories ) && $free_material_categories ) : ?>
+					<form class="free-material-filters__form" data-free-material-filter-form>
+						<fieldset class="free-material-filters__fieldset">
+							<legend><?php esc_html_e( 'Categorias', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></legend>
+							<?php foreach ( $free_material_categories as $free_material_category ) : ?>
+								<label class="free-material-filters__option">
+									<input
+										type="checkbox"
+										name="material_categoria"
+										value="<?php echo esc_attr( $free_material_category->slug ); ?>"
+										data-free-material-filter
+									>
+									<span><?php echo esc_html( $free_material_category->name ); ?></span>
+								</label>
+							<?php endforeach; ?>
+						</fieldset>
+
+						<div class="free-material-filters__actions">
+							<button class="ds-button ds-button--primary free-material-filters__apply" type="submit">
+								<?php esc_html_e( 'Aplicar filtros', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>
+							</button>
+							<button class="ds-button ds-button--secondary free-material-filters__clear" type="button" data-free-material-clear>
+								<?php esc_html_e( 'Limpar filtros', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>
+							</button>
+						</div>
+					</form>
+				<?php else : ?>
+					<p class="free-material-filters__empty"><?php esc_html_e( 'Nenhuma categoria cadastrada.', 'eumilitar-neo-brutalism-wordpress-theme' ); ?></p>
+				<?php endif; ?>
+			</aside>
+
+			<div class="free-materials-layout__content">
+				<div class="free-material-grid" data-free-material-grid>
+					<?php
+					while ( have_posts() ) :
+						the_post();
+						get_template_part( 'template-parts/content', 'free-material-card' );
+					endwhile;
+					?>
+				</div>
+
+				<p class="free-material-grid__empty" hidden data-free-material-empty>
+					<?php esc_html_e( 'Nenhum material encontrado para os filtros selecionados.', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>
+				</p>
+			</div>
 		</div>
 
 		<?php eumilitar_render_posts_pagination(); ?>

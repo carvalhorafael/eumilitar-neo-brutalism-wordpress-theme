@@ -6,9 +6,20 @@
  */
 
 $material_excerpt = eumilitar_get_listing_excerpt();
+$material_terms   = get_the_terms( get_the_ID(), EUMILITAR_FREE_MATERIAL_TAXONOMY );
+$material_slugs   = array();
+
+if ( is_array( $material_terms ) ) {
+	$material_slugs = wp_list_pluck( $material_terms, 'slug' );
+}
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'free-material-card ds-card' ); ?>>
+<article
+	id="post-<?php the_ID(); ?>"
+	<?php post_class( 'free-material-card ds-card' ); ?>
+	data-free-material-card
+	data-categories="<?php echo esc_attr( implode( ' ', $material_slugs ) ); ?>"
+>
 	<a class="free-material-card__media" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
 		<?php if ( has_post_thumbnail() ) : ?>
 			<?php the_post_thumbnail( 'large', array( 'class' => 'free-material-card__image' ) ); ?>

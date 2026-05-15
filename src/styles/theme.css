@@ -346,6 +346,93 @@ a {
   max-width: 680px;
 }
 
+.free-materials-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  grid-template-columns: minmax(13rem, 0.28fr) minmax(0, 1fr);
+}
+
+.free-materials-layout__content {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.free-material-filters {
+  background: var(--surface-raised, #fff8e8);
+  border: 2px solid var(--border-strong, #1a1612);
+  box-shadow: var(--shadow-sm, 3px 3px 0 #1a1612);
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.free-material-filters__title {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 1.75rem;
+  line-height: 0.95;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.free-material-filters__form,
+.free-material-filters__fieldset,
+.free-material-filters__actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.free-material-filters__fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.free-material-filters__fieldset legend {
+  color: var(--text-secondary, #5a5048);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-block-end: 0.75rem;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.free-material-filters__option {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  font-weight: 800;
+  gap: 0.625rem;
+  grid-template-columns: auto 1fr;
+  line-height: 1.2;
+}
+
+.free-material-filters__option input {
+  accent-color: var(--accent, #1f4d2a);
+  height: 1.125rem;
+  width: 1.125rem;
+}
+
+.free-material-filters__actions .ds-button {
+  justify-content: center;
+  width: 100%;
+}
+
+.free-material-filters__empty,
+.free-material-grid__empty {
+  line-height: 1.5;
+  margin: 0;
+}
+
+.free-material-grid__empty {
+  background: var(--surface-raised, #fff8e8);
+  border: 2px solid var(--border-strong, #1a1612);
+  font-weight: 800;
+  padding: 1rem;
+}
+
 .free-material-grid {
   display: grid;
   gap: 1.25rem;
@@ -1494,6 +1581,7 @@ form[role="search"] input[type="submit"] {
 
 @media (max-width: 900px) {
   .site-main--with-sidebar .content-sidebar-layout,
+  .free-materials-layout,
   .free-material-single__hero {
     grid-template-columns: 1fr;
   }

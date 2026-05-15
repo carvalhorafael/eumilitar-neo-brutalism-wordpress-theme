@@ -112,4 +112,53 @@ final class FreeMaterialsTest extends TestCase {
 		wp_delete_post( $post_id, true );
 		wp_delete_term( (int) $term['term_id'], EUMILITAR_FREE_MATERIAL_TAXONOMY );
 	}
+
+	/**
+	 * Listing cards should expose category slugs for client-side filters.
+	 */
+	public function test_free_material_card_exposes_category_filter_data(): void {
+		$term = wp_insert_term(
+			'Ebook',
+			EUMILITAR_FREE_MATERIAL_TAXONOMY,
+			array(
+				'slug' => 'ebook-material-card-test',
+			)
+		);
+
+		$this->assertIsArray( $term );
+
+		$post_id = wp_insert_post(
+			array(
+				'post_excerpt' => 'Resumo do material.',
+				'post_title'   => 'Mapa de estudos',
+				'post_status'  => 'publish',
+				'post_type'    => EUMILITAR_FREE_MATERIAL_POST_TYPE,
+			),
+			true
+		);
+
+		$this->assertIsInt( $post_id );
+		wp_set_object_terms( $post_id, (int) $term['term_id'], EUMILITAR_FREE_MATERIAL_TAXONOMY );
+
+		$query = new WP_Query(
+			array(
+				'p'         => $post_id,
+				'post_type' => EUMILITAR_FREE_MATERIAL_POST_TYPE,
+			)
+		);
+
+		ob_start();
+		if ( $query->have_posts() ) {
+			$query->the_post();
+			get_template_part( 'template-parts/content', 'free-material-card' );
+			wp_reset_postdata();
+		}
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'data-free-material-card', $output );
+		$this->assertStringContainsString( 'data-categories="ebook-material-card-test"', $output );
+
+		wp_delete_post( $post_id, true );
+		wp_delete_term( (int) $term['term_id'], EUMILITAR_FREE_MATERIAL_TAXONOMY );
+	}
 }
