@@ -84,6 +84,59 @@ function eumilitar_render_elementor_pattern_partial( $slug, $args ) {
 }
 
 /**
+ * Get WordPress menu options for Elementor select controls.
+ *
+ * @return array<string, string>
+ */
+function eumilitar_get_elementor_menu_options() {
+	$options = array(
+		'' => esc_html__( 'Selecione um menu', 'eumilitar-neo-brutalism-wordpress-theme' ),
+	);
+	$menus   = wp_get_nav_menus();
+
+	foreach ( $menus as $menu ) {
+		$options[ (string) $menu->term_id ] = $menu->name;
+	}
+
+	return $options;
+}
+
+/**
+ * Render a WordPress menu with Elementor-safe EuMilitar markup.
+ *
+ * @param int|string $menu_id Menu term ID.
+ * @param string     $alignment Menu alignment.
+ * @return void
+ */
+function eumilitar_render_elementor_menu( $menu_id, $alignment = 'end' ) {
+	$menu_id = absint( $menu_id );
+
+	if ( ! $menu_id ) {
+		return;
+	}
+
+	$allowed_alignments = array( 'start', 'center', 'end' );
+	$alignment          = in_array( $alignment, $allowed_alignments, true ) ? $alignment : 'end';
+	$menu_args          = array(
+		'container'       => 'nav',
+		'container_class' => 'em-menu em-menu--align-' . $alignment,
+		'echo'            => false,
+		'fallback_cb'     => false,
+		'menu_class'      => 'em-menu__list',
+		'menu_id'         => 'em-menu-' . $menu_id,
+		'theme_location'  => 'primary',
+	);
+	$menu_args['menu']  = $menu_id;
+	$menu               = wp_nav_menu( $menu_args );
+
+	if ( ! $menu ) {
+		return;
+	}
+
+	echo $menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_nav_menu returns WordPress-generated navigation markup.
+}
+
+/**
  * Register EuMilitar widgets for Elementor.
  *
  * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
@@ -104,6 +157,7 @@ function eumilitar_register_elementor_widgets( $widgets_manager ) {
 	require_once EUMILITAR_THEME_DIR . '/inc/elementor/widgets/class-eumilitar-elementor-trust-bar-widget.php';
 	require_once EUMILITAR_THEME_DIR . '/inc/elementor/widgets/class-eumilitar-elementor-benefits-widget.php';
 	require_once EUMILITAR_THEME_DIR . '/inc/elementor/widgets/class-eumilitar-elementor-urgency-widget.php';
+	require_once EUMILITAR_THEME_DIR . '/inc/elementor/widgets/class-eumilitar-elementor-menu-widget.php';
 
 	$widgets_manager->register( new \Eumilitar_Elementor_Hero_Widget() );
 	$widgets_manager->register( new \Eumilitar_Elementor_Cta_Widget() );
@@ -115,6 +169,7 @@ function eumilitar_register_elementor_widgets( $widgets_manager ) {
 	$widgets_manager->register( new \Eumilitar_Elementor_Trust_Bar_Widget() );
 	$widgets_manager->register( new \Eumilitar_Elementor_Benefits_Widget() );
 	$widgets_manager->register( new \Eumilitar_Elementor_Urgency_Widget() );
+	$widgets_manager->register( new \Eumilitar_Elementor_Menu_Widget() );
 }
 add_action( 'elementor/widgets/register', 'eumilitar_register_elementor_widgets' );
 
