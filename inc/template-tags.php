@@ -115,7 +115,7 @@ function eumilitar_get_blog_url() {
 }
 
 /**
- * Get a compact excerpt for post listing cards.
+ * Get a compact excerpt for listing cards.
  *
  * @param int|null $post_id Post ID.
  * @param int      $words Maximum word count.
