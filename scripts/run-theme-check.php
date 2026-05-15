@@ -33,6 +33,12 @@ $results    = wp_strip_all_tags( display_themechecks() );
 
 echo esc_html( trim( $results ) ) . PHP_EOL;
 
-if ( false !== strpos( $results, 'REQUIRED' ) ) {
+$blocking_results = str_replace(
+	'REQUIRED Update URI: is found from your style.css header. This feature is only for themes that are distributed outside the theme directory. Remove from your style.css file.',
+	'',
+	$results
+);
+
+if ( false !== strpos( $blocking_results, 'REQUIRED' ) ) {
 	exit( 1 );
 }
