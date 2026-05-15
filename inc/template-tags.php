@@ -115,6 +115,29 @@ function eumilitar_get_blog_url() {
 }
 
 /**
+ * Get a compact excerpt for listing cards.
+ *
+ * @param int|null $post_id Post ID.
+ * @param int      $words Maximum word count.
+ * @return string
+ */
+function eumilitar_get_listing_excerpt( $post_id = null, $words = 18 ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+
+	if ( ! $post_id ) {
+		return '';
+	}
+
+	$excerpt = get_the_excerpt( $post_id );
+
+	if ( ! is_string( $excerpt ) || '' === trim( $excerpt ) ) {
+		return '';
+	}
+
+	return wp_trim_words( wp_strip_all_tags( $excerpt ), $words, ' [...]' );
+}
+
+/**
  * Render fallback navigation when no WordPress menu is assigned.
  *
  * @return void
