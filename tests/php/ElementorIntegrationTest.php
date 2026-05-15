@@ -10,8 +10,10 @@ use PHPUnit\Framework\TestCase;
 /**
  * Verifies Elementor-facing integration points remain registered and safe.
  *
+ * @covers ::eumilitar_get_elementor_menu_options
  * @covers ::eumilitar_register_elementor_widget_category
  * @covers ::eumilitar_register_elementor_widgets
+ * @covers ::eumilitar_render_elementor_menu
  * @covers ::eumilitar_render_elementor_pattern_partial
  */
 final class ElementorIntegrationTest extends TestCase {
@@ -49,11 +51,47 @@ final class ElementorIntegrationTest extends TestCase {
 		eumilitar_register_elementor_widgets( $widgets_manager );
 
 		if ( class_exists( '\Elementor\Widget_Base' ) ) {
-			$this->assertCount( 10, $widgets_manager->widgets );
+			$this->assertCount( 11, $widgets_manager->widgets );
 			return;
 		}
 
 		$this->assertSame( array(), $widgets_manager->widgets );
+	}
+
+	/**
+	 * Elementor menu helpers should expose and render WordPress menus.
+	 */
+	public function test_elementor_menu_helpers_render_selected_wordpress_menu(): void {
+		$menu_id = wp_create_nav_menu( 'Menu Elementor Test ' . wp_generate_uuid4() );
+
+		$this->assertIsInt( $menu_id );
+
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title'  => 'Cursos',
+				'menu-item-url'    => home_url( '/cursos/' ),
+				'menu-item-status' => 'publish',
+				'menu-item-type'   => 'custom',
+			)
+		);
+
+		$options = eumilitar_get_elementor_menu_options();
+
+		$this->assertArrayHasKey( (string) $menu_id, $options );
+		$this->assertStringContainsString( 'Menu Elementor Test', $options[ (string) $menu_id ] );
+
+		ob_start();
+		eumilitar_render_elementor_menu( $menu_id, 'center' );
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'class="em-menu em-menu--align-center"', $output );
+		$this->assertStringContainsString( 'class="em-menu__list"', $output );
+		$this->assertStringContainsString( 'Cursos', $output );
+		$this->assertStringContainsString( home_url( '/cursos/' ), $output );
+
+		wp_delete_nav_menu( $menu_id );
 	}
 
 	/**
