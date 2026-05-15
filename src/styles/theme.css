@@ -38,6 +38,10 @@ a {
     transform 160ms ease;
 }
 
+button.ds-button {
+  cursor: pointer;
+}
+
 .ds-benefits > .ds-button,
 .ds-testimonials > .ds-button {
   justify-self: start;

@@ -133,6 +133,78 @@ function eumilitar_register_free_material_content_type() {
 add_action( 'init', 'eumilitar_register_free_material_content_type' );
 
 /**
+ * Get selected free material category slugs from the request.
+ *
+ * @return string[]
+ */
+function eumilitar_get_selected_free_material_category_slugs() {
+	$selected_categories = array();
+
+	if ( isset( $_GET['material_categories'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$raw_categories = wp_unslash( $_GET['material_categories'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+		if ( is_array( $raw_categories ) ) {
+			$selected_categories = $raw_categories;
+		} elseif ( is_string( $raw_categories ) ) {
+			$selected_categories = explode( ',', $raw_categories );
+		}
+	}
+
+	if ( isset( $_GET[ EUMILITAR_FREE_MATERIAL_TAXONOMY ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$selected_categories[] = wp_unslash( $_GET[ EUMILITAR_FREE_MATERIAL_TAXONOMY ] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	}
+
+	return array_values(
+		array_unique(
+			array_filter(
+				array_map( 'sanitize_title', $selected_categories )
+			)
+		)
+	);
+}
+
+/**
+ * Filter the free material archive by selected category slugs.
+ *
+ * @param WP_Query $query Main query.
+ * @return void
+ */
+function eumilitar_filter_free_material_archive_query( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	$selected_categories = eumilitar_get_selected_free_material_category_slugs();
+	$is_free_materials   = $query->is_post_type_archive( EUMILITAR_FREE_MATERIAL_POST_TYPE )
+		|| EUMILITAR_FREE_MATERIAL_POST_TYPE === $query->get( 'post_type' )
+		|| '' !== $query->get( EUMILITAR_FREE_MATERIAL_TAXONOMY )
+		|| ! empty( $selected_categories );
+
+	if ( ! $is_free_materials ) {
+		return;
+	}
+
+	$query->set( 'post_type', EUMILITAR_FREE_MATERIAL_POST_TYPE );
+
+	if ( ! $selected_categories ) {
+		return;
+	}
+
+	$query->set(
+		'tax_query',
+		array(
+			array(
+				'field'    => 'slug',
+				'operator' => 'IN',
+				'taxonomy' => EUMILITAR_FREE_MATERIAL_TAXONOMY,
+				'terms'    => $selected_categories,
+			),
+		)
+	);
+}
+add_action( 'pre_get_posts', 'eumilitar_filter_free_material_archive_query' );
+
+/**
  * Register capture settings meta box.
  *
  * @return void
