@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers ::eumilitar_render_action
  * @covers ::eumilitar_render_badge
+ * @covers ::eumilitar_get_listing_excerpt
  * @covers ::eumilitar_render_post_meta
  * @covers ::eumilitar_render_post_taxonomy
  * @covers ::eumilitar_post_uses_design_system_patterns
@@ -67,6 +68,29 @@ final class TemplateTagsTest extends TestCase {
 
 		$this->assertIsInt( $post_id );
 		$this->assertTrue( eumilitar_post_uses_design_system_patterns( $post_id ) );
+
+		wp_delete_post( $post_id, true );
+	}
+
+	/**
+	 * Listing excerpts should stay compact even when editors write long manual excerpts.
+	 */
+	public function test_listing_excerpt_is_trimmed_for_blog_cards(): void {
+		$post_id = wp_insert_post(
+			array(
+				'post_title'   => 'Artigo com resumo longo',
+				'post_status'  => 'publish',
+				'post_content' => 'Conteúdo do artigo.',
+				'post_excerpt' => 'Este resumo editorial foi escrito com muitas palavras para simular um artigo real importado do site em produção e precisa ser reduzido na listagem.',
+			),
+			true
+		);
+
+		$this->assertIsInt( $post_id );
+
+		$excerpt = eumilitar_get_listing_excerpt( $post_id, 10 );
+
+		$this->assertSame( 'Este resumo editorial foi escrito com muitas palavras para simular [...]', $excerpt );
 
 		wp_delete_post( $post_id, true );
 	}
