@@ -5,6 +5,8 @@
  * @package EuMilitar
  */
 
+$listing_excerpt = eumilitar_get_listing_excerpt();
+
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'post-card ds-card' ); ?>>
@@ -30,9 +32,11 @@
 			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 		</h2>
 
-		<div class="post-card__excerpt">
-			<?php the_excerpt(); ?>
-		</div>
+		<?php if ( $listing_excerpt ) : ?>
+			<div class="post-card__excerpt">
+				<p><?php echo esc_html( $listing_excerpt ); ?></p>
+			</div>
+		<?php endif; ?>
 
 		<a class="ds-button ds-button--secondary post-card__link" href="<?php the_permalink(); ?>">
 			<?php esc_html_e( 'Ler artigo', 'eumilitar-neo-brutalism-wordpress-theme' ); ?>

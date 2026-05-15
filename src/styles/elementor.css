@@ -258,6 +258,74 @@ body.elementor-page .site-entry__header {
   overflow: hidden;
 }
 
+.elementor .em-menu {
+  display: flex;
+  width: 100%;
+}
+
+.elementor .em-menu--align-start {
+  justify-content: flex-start;
+}
+
+.elementor .em-menu--align-center {
+  justify-content: center;
+}
+
+.elementor .em-menu--align-end {
+  justify-content: flex-end;
+}
+
+.elementor .em-menu__list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.elementor .em-menu__list a {
+  background: var(--paper, #ede4cf);
+  border: 2px solid var(--border-strong, #1a1612);
+  color: var(--ink, #1a1612);
+  display: inline-flex;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1;
+  min-height: 2.5rem;
+  padding: 0.625rem 0.75rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.elementor .em-menu__list a:hover,
+.elementor .em-menu__list a:focus-visible,
+.elementor .em-menu__list .current-menu-item > a,
+.elementor .em-menu__list .current_page_item > a {
+  background: var(--accent, #1f4d2a);
+  color: var(--text-inverse, #fff);
+}
+
+.elementor .em-menu__list a:focus-visible {
+  box-shadow: var(--shadow-xs, 2px 2px 0 #1a1612);
+  outline: 2px solid var(--accent, #1f4d2a);
+  outline-offset: 2px;
+}
+
+.elementor .em-menu-placeholder {
+  background: var(--paper, #ede4cf);
+  border: 2px dashed var(--border-strong, #1a1612);
+  color: var(--ink, #1a1612);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.875rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .elementor .em-trust-bar {
   background: var(--paper, #ede4cf);
   border-block: 2px solid var(--border-strong, #1a1612);
@@ -308,5 +376,22 @@ body.elementor-page .site-entry__header {
 
   .elementor .em-trust-bar__item:last-child {
     border-block-end: 0;
+  }
+
+  .elementor .em-menu,
+  .elementor .em-menu--align-start,
+  .elementor .em-menu--align-center,
+  .elementor .em-menu--align-end {
+    justify-content: stretch;
+  }
+
+  .elementor .em-menu__list {
+    display: grid;
+    width: 100%;
+  }
+
+  .elementor .em-menu__list li,
+  .elementor .em-menu__list a {
+    width: 100%;
   }
 }
