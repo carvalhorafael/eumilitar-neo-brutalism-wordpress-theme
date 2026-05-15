@@ -20,3 +20,4 @@ require_once EUMILITAR_THEME_DIR . '/inc/patterns.php';
 require_once EUMILITAR_THEME_DIR . '/inc/elementor.php';
 require_once EUMILITAR_THEME_DIR . '/inc/template-tags.php';
 require_once EUMILITAR_THEME_DIR . '/inc/widgets.php';
+require_once EUMILITAR_THEME_DIR . '/inc/updater.php';
