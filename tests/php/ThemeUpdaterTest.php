@@ -35,23 +35,24 @@ final class ThemeUpdaterTest extends TestCase {
 	 * A newer GitHub release with the packaged ZIP should produce update data.
 	 */
 	public function test_github_release_produces_theme_update(): void {
-		$release = array(
-			'tag_name' => 'v0.3.1',
-			'html_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/tag/v0.3.1',
+		$new_version = '99.0.0';
+		$release     = array(
+			'tag_name' => 'v' . $new_version,
+			'html_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/tag/v' . $new_version,
 			'assets'   => array(
 				array(
 					'name'                 => EUMILITAR_THEME_RELEASE_ASSET,
-					'browser_download_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/download/v0.3.1/eumilitar-neo-brutalism-wordpress-theme.zip',
+					'browser_download_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/download/v' . $new_version . '/eumilitar-neo-brutalism-wordpress-theme.zip',
 				),
 			),
 		);
 
-		$update = eumilitar_theme_update_from_release( $release, '0.3.0' );
+		$update = eumilitar_theme_update_from_release( $release, EUMILITAR_THEME_VERSION );
 
 		$this->assertIsArray( $update );
 		$this->assertSame( EUMILITAR_THEME_SLUG, $update['theme'] );
-		$this->assertSame( '0.3.1', $update['version'] );
-		$this->assertSame( '0.3.1', $update['new_version'] );
+		$this->assertSame( $new_version, $update['version'] );
+		$this->assertSame( $new_version, $update['new_version'] );
 		$this->assertSame( $release['html_url'], $update['url'] );
 		$this->assertSame( $release['assets'][0]['browser_download_url'], $update['package'] );
 	}
@@ -61,16 +62,16 @@ final class ThemeUpdaterTest extends TestCase {
 	 */
 	public function test_current_release_does_not_produce_theme_update(): void {
 		$release = array(
-			'tag_name' => 'v0.3.0',
+			'tag_name' => 'v' . EUMILITAR_THEME_VERSION,
 			'assets'   => array(
 				array(
 					'name'                 => EUMILITAR_THEME_RELEASE_ASSET,
-					'browser_download_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/download/v0.3.0/eumilitar-neo-brutalism-wordpress-theme.zip',
+					'browser_download_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/download/v' . EUMILITAR_THEME_VERSION . '/eumilitar-neo-brutalism-wordpress-theme.zip',
 				),
 			),
 		);
 
-		$this->assertFalse( eumilitar_theme_update_from_release( $release, '0.3.0' ) );
+		$this->assertFalse( eumilitar_theme_update_from_release( $release, EUMILITAR_THEME_VERSION ) );
 	}
 
 	/**
@@ -94,15 +95,17 @@ final class ThemeUpdaterTest extends TestCase {
 	 * The WordPress update filter should use the cached GitHub release for this theme.
 	 */
 	public function test_update_filter_returns_cached_github_release_for_this_theme(): void {
+		$new_version = '99.0.0';
+
 		set_site_transient(
 			EUMILITAR_THEME_RELEASE_CACHE_KEY,
 			array(
-				'tag_name' => 'v0.3.1',
-				'html_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/tag/v0.3.1',
+				'tag_name' => 'v' . $new_version,
+				'html_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/tag/v' . $new_version,
 				'assets'   => array(
 					array(
 						'name'                 => EUMILITAR_THEME_RELEASE_ASSET,
-						'browser_download_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/download/v0.3.1/eumilitar-neo-brutalism-wordpress-theme.zip',
+						'browser_download_url' => 'https://github.com/carvalhorafael/eumilitar-neo-brutalism-wordpress-theme/releases/download/v' . $new_version . '/eumilitar-neo-brutalism-wordpress-theme.zip',
 					),
 				),
 			)
@@ -118,7 +121,7 @@ final class ThemeUpdaterTest extends TestCase {
 		);
 
 		$this->assertIsArray( $update );
-		$this->assertSame( '0.3.1', $update['new_version'] );
+		$this->assertSame( $new_version, $update['new_version'] );
 	}
 
 	/**
